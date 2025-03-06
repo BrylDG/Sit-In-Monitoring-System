@@ -1,12 +1,14 @@
 import UserNav from './UserNav'
+import UserAnnouncements from './UserAnnouncements'
+import ProfilePage from './ProfilePage'
+
 import '../styles/UserDash.css'
 
 function UserDash() {
     return (
         <div className="UserDashDiv">
             <UserNav />
-            <h1>Welcome to your dashboard!</h1>
-
+            <ProfilePage />
         </div>
     )
 }
