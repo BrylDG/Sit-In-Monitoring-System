@@ -27,13 +27,13 @@ body {
     z-index: 1;
     top: 25%;
     left: 15%;
-    width: 70%;
+    width: 60%;
 }
 
 .section {
     display: flex;
     flex-direction: row;
-    margin-left: 12%;
+    margin-left: 15%;
     margin-top: 2%;
     gap: 2%;
 }
@@ -46,7 +46,7 @@ body {
 
 label {
     font-weight: 600;
-    font-size: x-large;
+    font-size: large;
     margin-top: 10px;
     display: block;
     color: #0f3857;
@@ -54,7 +54,7 @@ label {
 
 .profileInput {
     margin: 5px;
-    padding: 15px;
+    padding: 10px;
     border: 1px solid #1e70ae;
     border-radius: 5px;
     font-size: large;
@@ -71,7 +71,8 @@ label {
 }
 
 #editButton {
-    margin-top: 10px;
+    margin-top: 3%;
+    margin-left: 15.5%;
     padding: 10px;
     width: 10%;
     border: none;
@@ -94,9 +95,11 @@ label {
     font-size: 16px;
     align-self: center;
 }
+
 button:hover {
     background-color: #0056b3;
 }
+
 .popup {
     display: none;
     position: fixed;
@@ -108,15 +111,18 @@ button:hover {
     justify-content: center;
     align-items: center;
 }
+
 .popup.show {
     display: flex !important;
 }
+
 .popup-content {
     background: white;
     padding: 20px;
     border-radius: 10px;
     width: 400px;
 }
+
 .close-btn {
     cursor: pointer;
     color: red;
@@ -133,7 +139,8 @@ form {
     border-radius: 100%;
     border: 5px solid #1e70ae;
     position: absolute;
-    z-index: 2; /* Added z-index */
+    z-index: 2;
+    /* Added z-index */
 }
 
 #emailSection {
@@ -141,5 +148,5 @@ form {
 }
 
 #emailContainer {
-    width:63%;
+    width: 63%;
 }

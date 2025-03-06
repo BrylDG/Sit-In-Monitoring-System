@@ -1,12 +1,10 @@
 import './styles/App.css'
-import LoginForm from './components/LoginForm.tsx'
-import RegisterForm from './components/RegisterForm.tsx'
-import UserDash from './components/UserDash.tsx'
+import Landing from './components/Landing'
 
 function App() {
   return (
     <body>
-      <UserDash />
+      <Landing />
     </body>
   )
 }

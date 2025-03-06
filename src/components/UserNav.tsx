@@ -1,13 +1,16 @@
 import { useRef, useEffect, useState } from "react";
-import { useActiveTab } from "../components/backendFunctions"; // Import from backendFunctions.ts
+import { Link, useLocation } from "react-router-dom";
 import default_icon from "../assets/profileIcon.jpg";
 import "../styles/UserNav.css";
 
 function UserNav() {
     const imgRef = useRef<HTMLImageElement>(null);
     const dropdownRef = useRef<HTMLUListElement>(null);
-    const { activeTab, changeTab } = useActiveTab(); // Get active tab from URL
+    const location = useLocation();
     const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    // Extract the active tab from the pathname
+    const activeTab = location.pathname.replace("/Dashboard/", "") || "Announcements";
 
     useEffect(() => {
         const handleClick = (event: MouseEvent) => {
@@ -26,11 +29,6 @@ function UserNav() {
         };
     }, []);
 
-    const handleTabClick = (event: React.MouseEvent, tabName: string) => {
-        event.preventDefault();
-        changeTab(tabName);
-    };
-
     return (
         <nav>
             {/* Dynamic Page Title */}
@@ -39,13 +37,13 @@ function UserNav() {
             <ul>
                 {["Announcements", "History", "Reservation"].map((tab) => (
                     <li key={tab}>
-                        <a 
-                            href={`/${tab}`} 
+                        <Link
+                            id="link"
+                            to={`/Dashboard/${tab}`}
                             className={activeTab === tab ? "active" : ""}
-                            onClick={(e) => handleTabClick(e, tab)}
                         >
                             {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                        </a>
+                        </Link>
                     </li>
                 ))}
                 <li id="Profile">
@@ -54,8 +52,8 @@ function UserNav() {
                     </a>
                     {dropdownOpen && (
                         <ul ref={dropdownRef} className="dropdown">
-                            <li className="DropdownList"><a href="/Profile Page" className="DropdownLabel">View Profile</a></li>
-                            <li className="DropdownList"><a href="/logout" className="DropdownLabel">Sign Out</a></li>
+                            <li className="DropdownList"><Link to="/Dashboard/Profile" className="DropdownLabel">View Profile</Link></li>
+                            <li className="DropdownList"><Link to="/" className="DropdownLabel">Sign Out</Link></li>
                         </ul>
                     )}
                 </li>
