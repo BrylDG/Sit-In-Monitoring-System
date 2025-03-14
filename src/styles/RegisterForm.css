@@ -1,0 +1,121 @@
+#form-container {
+    padding: 50px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    box-shadow: 0 0 30px 0 rgba(0, 0, 0, 0.3);
+    background-color: white;
+    border-radius: 10px;
+}
+
+#FirstDivision,
+#SecondDivision,
+#ThirdDivision,
+#FourthDivision {
+    display: flex;
+    flex-direction: row;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+}
+
+.division {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#idDivision {
+    width: 30%;
+}
+
+#lastNameDivision,
+#middleNameDivision,
+#courseDivision,
+#yearLevelDivision {
+    width: 50%;
+}
+
+label {
+    color: #0f3857;
+}
+
+input,
+select {
+    margin: 5px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input:focus {
+    outline: none;
+    border: 1px solid #007FFF;
+}
+
+button {
+    align-self: center;
+    width: 60%;
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #0f3857;
+    cursor: pointer;
+    color: white;
+}
+
+button:hover {
+    background-color: #15855c;
+    color: white;
+}
+
+#login {
+    font-size: 10px;
+    color: black;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+a {
+    text-decoration: none;
+    color: #007FFF;
+}
+
+#topinside {
+    display: flex;
+    justify-content: center;
+    width: 80%;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+#top {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: auto;
+    border-radius: 0;
+    box-shadow: none;
+    margin-bottom: 5%;
+}
+
+#logo {
+    width: 40%;
+    margin: 10px;
+}
+
+hr {
+    border: solid 1px #0f3857;
+    width: 100%;
+}

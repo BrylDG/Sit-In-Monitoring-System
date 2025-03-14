@@ -1,0 +1,97 @@
+.UserAnnouncementDiv {
+    display: flex;
+    flex-direction: row;
+    height: 92vh;
+}
+
+.AnnouncementField {
+    width: 80%;
+}
+
+.RulesField {
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    padding: 0 1%;
+    border-left: solid 2px #c4c4c4;
+    background-color: white;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.RulesField::-webkit-scrollbar {
+    display: none;
+}
+  
+#RulesReg-Top {
+    border-bottom: 2px solid #0f3857;
+    margin-bottom: 5%;
+}
+
+#Rules-Div {
+    border-bottom: 2px solid #0f3857;
+    margin-bottom: 5%;
+}
+
+#Rules-Top {
+
+}
+
+#Regulations-Top {
+
+}
+
+#Regulations-Div {
+
+}
+
+#Regulations-Body {
+    margin-bottom: 10%;
+}
+
+.RulesUl {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.RulesLi {
+    margin: 0;
+    font-size: small;
+    margin-bottom: 5%;
+}
+
+.RegulationsLi {
+    list-style-type: disc;
+    font-size: smaller;
+    padding-left: 5%;
+}
+
+.title {
+    color: #6e00ad;
+    font-size: 20px;
+    text-shadow: 1px 1px 2px #f6ff00;
+}
+
+
+#UC {
+    font-size: 35px;
+    margin-bottom: 0;
+}
+
+h4 {
+    margin-top: 0;
+    font-size: x-small;
+    color: #6e00ad;
+    text-shadow: 1px 1px 2px #f6ff00;
+}
+
+#description {
+    font-size: 14px;
+}
+
+p {
+    font-size: small;
+}
