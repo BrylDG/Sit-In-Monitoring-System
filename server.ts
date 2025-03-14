@@ -13,8 +13,10 @@ const dbConfig = {
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'sitinmanagementsystem'
+    database: 'SitInMonitoringSystem'
 };
+
+//start backend server using "npm run server"
 
 const pool = mysql.createPool(dbConfig);
 
@@ -42,10 +44,10 @@ app.post('/login', async (req, res) => {
 
 // ✅ Fix: Ensure the function returns `void`
 app.post('/register', async (req: Request, res: Response): Promise<void> => {
-    const { idNo, firstName, lastName, middleName, course, yearLevel, emailAddress, username, password } = req.body;
+    const { idNo, firstName, lastName, middleName, course, yearLevel, email, username, password } = req.body;
     console.log(req.body)
     // ✅ Check Required Fields
-    if (!idNo || !firstName || !lastName || !emailAddress || !username || !password) {
+    if (!idNo || !firstName || !lastName || !email || !username || !password) {
         res.status(400).json({ success: false, message: "All fields are required" });
         return;
     }
@@ -55,21 +57,21 @@ app.post('/register', async (req: Request, res: Response): Promise<void> => {
 
         // ✅ Check for Existing User
         const [existingUsers]: any = await connection.execute(
-            'SELECT * FROM users WHERE username = ? OR emailAddress = ?',
-            [username, emailAddress]
+            'SELECT * FROM users WHERE username = ? OR email = ?',
+            [username, email]
         );
 
         if (existingUsers.length > 0) {
             connection.release();
-            res.status(409).json({ success: false, message: "Username or emailAddress already exists" });
+            res.status(409).json({ success: false, message: "Username or email already exists" });
             return;
         }
         console.log('nakaabot')
         // ✅ Insert User into Database
         await connection.execute(
-            `INSERT INTO users (idNo, firstName, lastName, middleName, course, yearLevel, emailAddress, username, password) 
+            `INSERT INTO users (idNo, firstName, lastName, middleName, course, yearLevel, email, username, password) 
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-            [idNo, firstName, lastName, middleName, course, yearLevel, emailAddress, username, password]
+            [idNo, firstName, lastName, middleName, course, yearLevel, email, username, password]
         );
 
         connection.release();

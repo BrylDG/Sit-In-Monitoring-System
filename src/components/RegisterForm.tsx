@@ -12,7 +12,7 @@ function RegisterForm() {
         middleName: '',
         course: '',
         yearLevel: '',
-        emailAddress: '',
+        email: '',
         username: '',
         password: '',
         confirmPassword: ''
@@ -65,7 +65,7 @@ function RegisterForm() {
                 <div id="FirstDivision">
                     <div className="division">
                         <label htmlFor="idNo">ID Number</label>
-                        <input type="number" name="idNo" required onChange={handleChange} />
+                        <input type="text" name="idNo" required onChange={handleChange} />
                     </div>
                     <div className="division">
                         <label htmlFor="firstName">First Name</label>
@@ -102,7 +102,7 @@ function RegisterForm() {
                 </div>
                 <div className="division">
                     <label htmlFor="email">Email</label>
-                    <input type="email" name="emailAddress" required onChange={handleChange} />
+                    <input type="email" name="email" required onChange={handleChange} />
                 </div>
                 <div className="division">
                     <label htmlFor="username">Username</label>

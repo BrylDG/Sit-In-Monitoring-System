@@ -9,7 +9,7 @@ const dbConfig = {
     host: 'localhost',
     user: 'root', // Replace with actual MySQL username
     password: '', // Replace with actual MySQL password
-    database: 'sitinmanagementsystem'
+    database: 'SitInMonitoringSystem'
 };
 
 // ✅ Connection Pool for Better Performance
