@@ -69,8 +69,21 @@ $userData = [];
     return $userData;
  }
 
- function updateUser($conn) {
-    $stmt = $conn->prepare("UPDATE users SET em");
- }
+ function updateUser($conn, $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username) {
+    $sessionUser = $_SESSION['username'];
+    $stmt = $conn->prepare("UPDATE users SET idNo = ?, firstName = ?, lastName = ?, middleName = ?, course = ?, yearLevel = ?, email = ?, username = ? WHERE username = ?");
+    $stmt->bind_param("sssssssss", $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username, $sessionUser);
+    $_SESSION['username'] = $username;
+    
+    $stmt->execute();
+    $stmt->close();
+}
+
+function logout() {
+    session_unset();
+    session_destroy();
+    header("Location: index.php");
+    exit();
+}
  
 ?>

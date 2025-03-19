@@ -2,6 +2,24 @@
 require './components/dbFunctions.php';
 $conn = new mysqli($servername, $username, $password, $database);
 $userData = getProfile($conn);
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+  $idNo = $_POST['idNo'];
+  $firstName = $_POST['firstName'];
+  $lastName = $_POST['lastName'];
+  $middleName = $_POST['middleName'];
+  $course = $_POST['course']; 
+  $yearLevel = $_POST['yearLevel'];
+  $email = $_POST['email'];
+  $username = $_POST['username'];
+  updateUser($conn, $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username);
+}
+$conn->close();
+
+if (isset($_GET['logout'])) {
+  logout();
+}
+
 ?>
 
 
@@ -21,7 +39,7 @@ $userData = getProfile($conn);
   <div class="mainContainer">
     <div class="UserDashDiv">
       <nav>
-        <h1>Announcements</h1>
+        <h1 id="PageTitle">Announcements</h1>
         <ul>
           <li><a href="UserAnnouncements.php" onclick="changeDashboard('UserAnnouncements.php'); return false;">Announcements</a></li>
           <li><a href="UserHistory.php" onclick="changeDashboard('UserHistory.php'); return false;">History</a></li>
@@ -32,7 +50,7 @@ $userData = getProfile($conn);
             </a>
             <ul class="dropdown" id="dropdownMenu">
               <li class="DropdownList"><a href="javascript:void(0)" class="DropdownLabel" onclick="changeDashboard('UserProfile.php')">View Profile</a></li>
-              <li class="DropdownList"><a href="index.php" class="DropdownLabel">Sign Out</a></li>
+              <li class="DropdownList"><a href="UserDash.php?logout=true" class="DropdownLabel" onclick="changeDashboard('UserAnnouncements.php')">Sign Out</a></li>
             </ul>
           </li>
         </ul>

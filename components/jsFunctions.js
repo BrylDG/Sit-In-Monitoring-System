@@ -25,9 +25,24 @@ function changeDashboard(page) {
             document.getElementById('content').innerHTML = html;
             setActiveLink(page);
             sessionStorage.setItem('currentDashboard', page);
+
+            const pageTitles = {
+                "UserAnnouncements.php": "Announcements",
+                "UserHistory.php": "History",
+                "UserReservation.php": "Reservation",
+                "UserProfile.php": "Profile"
+            };
+
+            const pageFile = page.split('/').pop();
+
+            const pageTitleElement = document.getElementById('PageTitle');
+            if (pageTitleElement && pageTitles[pageFile]) {
+                pageTitleElement.textContent = pageTitles[pageFile];
+            }
         })
         .catch(error => console.error('Error loading component:', error));
 }
+
 
 function setActiveLink(page) {
     const links = document.querySelectorAll('nav a');
@@ -49,7 +64,6 @@ function toggleEditProfile() {
     const editBtn = document.getElementById('editButton');
     const updateBtn = document.getElementById('updateButton');
 
-    // If edit button is visible, enable editing
     if (editBtn.style.display !== 'none') {
         inputs.forEach(input => {
             input.removeAttribute('readonly');
@@ -58,7 +72,6 @@ function toggleEditProfile() {
         editBtn.style.display = 'none';
         updateBtn.style.display = 'inline-block';
     } else {
-        // On update click, disable editing
         inputs.forEach(input => {
             input.setAttribute('readonly', true);
             input.classList.remove('editable');
@@ -67,5 +80,4 @@ function toggleEditProfile() {
         editBtn.style.display = 'inline-block';
     }
 }
-
 
