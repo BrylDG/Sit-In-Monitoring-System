@@ -1,0 +1,150 @@
+.search-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 20px;
+}
+
+#searchInput {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-container button {
+    background-color: rgb(30, 173, 95);
+    color: white;
+    border: none;
+    padding: 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-container button:hover {
+    background-color: rgb(20, 140, 80);
+}
+
+.search-results {
+    position: absolute;
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 5px;
+    padding: 10px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.user-item {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.user-item:last-child {
+    border-bottom: none;
+}
+
+.user-item h3 {
+    margin: 5px 0;
+    font-size: 16px;
+}
+
+.user-item p {
+    margin: 2px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+.no-results {
+    text-align: center;
+    padding: 10px;
+    color: #999;
+}
+
+
+/* Overlay background */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+/* Overlay content */
+.overlay-content {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 50%;
+    max-height: 80%;
+    overflow-y: auto;
+    text-align: center;
+    position: relative;
+}
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    background: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+/* User form styling */
+.user-card {
+    background: #f8f8f8;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    text-align: left;
+}
+
+/* Profile image */
+.profile-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: block;
+    margin: 0 auto 10px;
+}
+
+/* Form input styling */
+.user-info label {
+    display: block;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.user-info input {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+/* Update button */
+.update-btn {
+    background: green;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    cursor: pointer;
+}

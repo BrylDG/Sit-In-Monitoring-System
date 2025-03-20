@@ -47,17 +47,42 @@ $userData = [];
  }
 
  function register($conn, $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username, $password) {
-    $stmt = $conn->prepare("INSERT INTO users (idNo, firstName, lastName, middleName, course, yearLevel, email, username, password, profileImage, created_at, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'image.png', DEFAULT, 'student')");
-        $stmt->bind_param("sssssssss", $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username, $password);
+    // ✅ Start transaction to ensure both inserts succeed
+    $conn->begin_transaction();
 
-        if ($stmt->execute()) {
-            echo "Registration successful! Redirecting to Login Page.";
-            header("Location: index.php");
-        } else {
-            echo "Error: " . $stmt->error;
-        }
+    try {
+        // ✅ Insert into `users` table
+        $stmt = $conn->prepare("
+            INSERT INTO users (idNo, firstName, lastName, middleName, course, yearLevel, email, username, password, profileImage, created_at, role) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'image.png', DEFAULT, 'student')
+        ");
+        $stmt->bind_param("sssssssss", $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username, $password);
+        $stmt->execute();
         $stmt->close();
- }
+
+        // ✅ Insert into `sessions` table (Default sessions = 30)
+        $stmt = $conn->prepare("INSERT INTO sessions (idNo, sessions) VALUES (?, 30)");
+        $stmt->bind_param("s", $idNo);
+        $stmt->execute();
+        $stmt->close();
+
+        // ✅ Commit the transaction
+        $conn->commit();
+
+        // ✅ Redirect to login page
+        echo "<script>
+                alert('Registration successful! Redirecting to Login Page.');
+                window.location.href = 'index.php';
+              </script>";
+        exit(); // Ensure script stops execution after redirect
+
+    } catch (Exception $e) {
+        // ❌ Rollback if there’s an error
+        $conn->rollback();
+        echo "Error: " . $e->getMessage();
+    }
+}
+
 
  function getProfile($conn) {
     $username = $_SESSION['username'];
@@ -119,6 +144,32 @@ function getAllAnnouncements($conn) {
         }
     }
     return json_encode($announcements);
+}
+
+function getAllSitIn($conn) {
+    $sql = "SELECT * FROM SitInTable ORDER BY SitInTime DESC";
+    $result = $conn->query($sql);
+
+    $SitInList = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $SitInList[] = $row;
+        }
+    }
+    return json_encode($SitInList);
+}
+
+function getAllSitInHistory($conn) {
+    $sql = "SELECT * FROM SitInHistory ORDER BY date, logout, login DESC";
+    $result = $conn->query($sql);
+
+    $HistoryList = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $HistoryList[] = $row;
+        }
+    }
+    return json_encode($HistoryList);
 }
 
 ?>

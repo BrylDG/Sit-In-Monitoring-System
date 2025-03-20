@@ -32,11 +32,12 @@ if (isset($_GET['logout'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./styles/global.css" />
   <link rel="stylesheet" href="./styles/UserDash.css" />
+  <link rel="stylesheet" href="./styles/UserHistory.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
 </head>
 
-<body>
+<body data-role="<?php echo htmlspecialchars(trim($userRole), ENT_QUOTES, 'UTF-8'); ?>">
   <div class="mainContainer">
     <div class="UserDashDiv">
       <nav>
