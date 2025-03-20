@@ -29,8 +29,14 @@ $userData = [];
         if ($user['password'] === $password) {
             $_SESSION['username'] = $username;
             getProfile($conn);
-            header("Location: UserDash.php");
-            exit();
+            if ($user['role'] === 'student') {
+                header("Location: UserDash.php");
+                exit();
+            } else {
+                header("Location: AdminDash.php");
+                exit();
+            }
+
         } else {
             return false;
         }
@@ -41,7 +47,7 @@ $userData = [];
  }
 
  function register($conn, $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username, $password) {
-    $stmt = $conn->prepare("INSERT INTO users (idNo, firstName, lastName, middleName, course, yearLevel, email, username, password, profileImage, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'image.png', DEFAULT)");
+    $stmt = $conn->prepare("INSERT INTO users (idNo, firstName, lastName, middleName, course, yearLevel, email, username, password, profileImage, created_at, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'image.png', DEFAULT, 'student')");
         $stmt->bind_param("sssssssss", $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username, $password);
 
         if ($stmt->execute()) {
@@ -85,5 +91,34 @@ function logout() {
     header("Location: index.php");
     exit();
 }
+
+function addAnnouncement($conn, $title, $details) {
+    $sql = "INSERT INTO announcements (announcement_title, announcement_details) VALUES (?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ss", $title, $details);
+
+    if ($stmt->execute()) {
+        $stmt->close();
+        header("Location: AdminDash.php");
+
+    } else {
+        $stmt->close();
+        return "Error: " . $conn->error;
+    }
+}
  
+function getAllAnnouncements($conn) {
+    $sql = "SELECT * FROM announcements ORDER BY created_on DESC";
+    $result = $conn->query($sql);
+
+    $announcements = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $announcements[] = $row;
+        }
+    }
+    return json_encode($announcements);
+}
+
 ?>

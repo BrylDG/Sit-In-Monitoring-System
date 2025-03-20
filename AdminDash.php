@@ -2,7 +2,7 @@
 require './components/dbFunctions.php';
 $conn = new mysqli($servername, $username, $password, $database);
 $userData = getProfile($conn);
-$userRole = isset($userData['role']) ? $userData['role'] : 'student';
+$userRole = isset($userData['role']) ? $userData['role'] : 'admin';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $idNo = $_POST['idNo'];
@@ -31,7 +31,8 @@ if (isset($_GET['logout'])) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="./styles/global.css" />
-  <link rel="stylesheet" href="./styles/UserDash.css" />
+  <link rel="stylesheet" href="./styles/AdminDash.css" />
+  <link rel="stylesheet" href="./styles/AdminAnnouncement.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
 </head>
@@ -42,9 +43,11 @@ if (isset($_GET['logout'])) {
       <nav>
         <h1 id="PageTitle">Announcements</h1>
         <ul>
-          <li><a href="UserAnnouncements.php" onclick="changeDashboard('UserAnnouncements.php'); return false;">Announcements</a></li>
-          <li><a href="UserHistory.php" onclick="changeDashboard('UserHistory.php'); return false;">History</a></li>
-          <li><a href="UserReservation.php" onclick="changeDashboard('UserReservation.php'); return false;">Reservation</a></li>
+        <li><a href="AdminStatsRep.php" onclick="changeDashboard('AdminStatsRep.php'); return false;">Statistics & Reports</a></li>
+          <li><a href="AdminAnnouncements.php" onclick="changeDashboard('AdminAnnouncements.php'); return false;">Announcements</a></li>
+          <li><a href="AdminSitIn.php" onclick="changeDashboard('AdminSitIn.php'); return false;">Sit-in</a></li>
+          <li><a href="AdminStudentList.php" onclick="changeDashboard('AdminStudentList.php'); return false;">Student List</a></li>
+          <li><a href="AdminFeedback.php" onclick="changeDashboard('AdminFeedback.php'); return false;">Feedbacks</a></li>
           <li id="Profile">
             <a href="#!" onclick="toggleDropdown(event)">
               <img src="./assets/profileIcon.jpg" alt="Profile Icon" id="Profile_Icon" />
