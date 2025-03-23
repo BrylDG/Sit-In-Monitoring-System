@@ -16,7 +16,7 @@ document.addEventListener("click", function (event) {
 
 window.onload = function () {
     const userRole = document.body.getAttribute("data-role");
-    console.log("User Role:", userRole); // ✅ Now correctly logs role
+    console.log("User Role:", userRole);
 
     const defaultPage = (userRole === "admin") ? "AdminStatsRep.php" : "UserAnnouncements.php";
     const lastPage = sessionStorage.getItem('currentDashboard') || defaultPage;
@@ -523,7 +523,6 @@ function fetchFeedback(feedbackNo) {
 function closeOverlay() {
     document.querySelector(".overlay")?.remove();
 }
-
 
 
 

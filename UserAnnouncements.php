@@ -1,6 +1,25 @@
+<?php
+require './components/dbFunctions.php';
+$conn = new mysqli($servername, $username, $password, $database);
+$announcements = json_decode(getAllAnnouncements($conn), true);
+$conn->close();
+
+?>
+
 <div class="UserAnnouncementDiv">
     <div class="AnnouncementField">
-
+    <?php if (!empty($announcements)): ?>
+            <?php foreach ($announcements as $announcement): ?>
+                <div class="announcement-item">
+                    <h3><?php echo htmlspecialchars($announcement['announcement_title']); ?></h3>
+                    <p><?php echo nl2br(htmlspecialchars($announcement['announcement_details'])); ?></p>
+                    <small>Posted on: <?php echo $announcement['created_on']; ?></small>
+                    <hr>
+                </div>
+            <?php endforeach; ?>
+        <?php else: ?>
+            <p>No announcements available.</p>
+        <?php endif; ?>
     </div>
 
     <div class="RulesField">

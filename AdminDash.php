@@ -34,11 +34,13 @@ if (isset($_GET['logout'])) {
   <link rel="stylesheet" href="./styles/AdminDash.css" />
   <link rel="stylesheet" href="./styles/AdminAnnouncement.css" />
   <link rel="stylesheet" href="./styles/AdminSitIn.css" />
+  <link rel="stylesheet" href="./styles/AdminFeedback.css" />
+  <link rel="stylesheet" href="./styles/AdminStudentList.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
 </head>
 
-<body>
+<body data-role="<?php echo htmlspecialchars(trim($userRole), ENT_QUOTES, 'UTF-8'); ?>">
   <div class="mainContainer">
     <div class="UserDashDiv">
       <nav>

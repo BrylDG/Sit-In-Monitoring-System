@@ -1,7 +1,13 @@
 <?php
 require './components/dbFunctions.php';
 $conn = new mysqli($servername, $username, $password, $database);
-$HistoryList = json_decode(getAllSitInHistory($conn), true);
+$userData = getProfile($conn);
+if (!isset($userData['idNo'])) {
+    die("Error: User ID not found.");
+}
+$idNo = $userData['idNo']; // Get the logged-in user's ID
+$HistoryList = json_decode(getAllSitInHistory($conn, $idNo), true);
+
 ?>
 
 <div class="userHistoryDiv">

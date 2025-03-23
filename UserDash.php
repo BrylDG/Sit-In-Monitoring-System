@@ -33,6 +33,7 @@ if (isset($_GET['logout'])) {
   <link rel="stylesheet" href="./styles/global.css" />
   <link rel="stylesheet" href="./styles/UserDash.css" />
   <link rel="stylesheet" href="./styles/UserHistory.css" />
+  <link rel="stylesheet" href="./styles/UserAnnouncement.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
 </head>

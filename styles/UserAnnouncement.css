@@ -1,0 +1,12 @@
+.AnnouncementField {
+    overflow: auto;
+    max-height: 80vh;
+    scrollbar-width: none;
+    padding: 0 5%;
+    -ms-overflow-style: none;
+    margin-top: 3%;
+}
+
+.AnnouncementField::-webkit-scrollbar {
+    display: none;
+}

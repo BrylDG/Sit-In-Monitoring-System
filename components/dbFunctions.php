@@ -159,7 +159,24 @@ function getAllSitIn($conn) {
     return json_encode($SitInList);
 }
 
-function getAllSitInHistory($conn) {
+function getAllSitInHistory($conn, $idNo) {
+    // Ensure idNo is properly escaped to prevent SQL injection
+    $idNo = $conn->real_escape_string($idNo);
+    
+    // Query with filtering condition
+    $sql = "SELECT * FROM SitInHistory WHERE idNo = '$idNo' ORDER BY date DESC, logout DESC, login DESC";
+    $result = $conn->query($sql);
+
+    $HistoryList = array();
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $HistoryList[] = $row;
+        }
+    }
+    return json_encode($HistoryList);
+}
+
+function getAllSitInHistoryAdmin($conn) {
     $sql = "SELECT * FROM SitInHistory ORDER BY date, logout, login DESC";
     $result = $conn->query($sql);
 
