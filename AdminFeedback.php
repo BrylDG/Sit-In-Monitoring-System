@@ -1,4 +1,5 @@
 <?php
+
 require './components/dbFunctions.php';
 $conn = new mysqli($servername, $username, $password, $database);
 $userData = getProfile($conn);
