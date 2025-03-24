@@ -8,10 +8,11 @@
 
 #searchInput {
     flex: 1;
-    padding: 10px;
+    padding: 15px;
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
+    border-radius: 10px;
+    font-size: 20px;
+    width: 95%;
 }
 
 .search-container button {
@@ -147,4 +148,81 @@
     padding: 5px 10px;
     border: none;
     cursor: pointer;
+}
+
+.SitInDiv {
+    padding: 2% 5%;
+}
+
+.SitInCard {
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 2% 2%;
+    width: 15%;
+    height: 30%;
+    background-color: white;
+}
+
+.bottom {
+    display: flex;
+    flex-direction: row;
+    gap: 2%;
+    margin-top: 3%;
+}
+
+.sitinLabel {
+    font-size: 10px;
+}
+
+.sitinDetail {
+    font-size: large;
+    margin-top: 10px;
+}
+
+.sitinSection {
+    display: flex;
+    flex-direction: row;
+    gap: 3%;
+}
+
+.sitinBottom {
+    display: flex;
+    flex-direction: column;
+}
+
+.signout-btn {
+    width: 50%;
+    margin-top: 15%;
+    align-self: center;
+    color: white;
+    background-color: #0f3857;
+    border-radius: 10px;
+    padding: 3% 5%;
+    margin-bottom: 5%;
+    border: none;
+}
+
+.signout-btn:hover {
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
+    color: white;
+    background-color: #1c6399;
+    border: none;
+}
+
+.sitinNav {
+    border: none;
+    background: none;
+    font-size: x-large;
+    padding: 0 1%;
+}
+
+.top {
+    display: flex;
+    flex-direction: row;
+}
+
+#searchForm {
+    all: unset;
+    width: 40%;
+    margin-right: 1%;
 }

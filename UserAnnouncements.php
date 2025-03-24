@@ -11,10 +11,10 @@ $conn->close();
     <?php if (!empty($announcements)): ?>
             <?php foreach ($announcements as $announcement): ?>
                 <div class="announcement-item">
-                    <h3><?php echo htmlspecialchars($announcement['announcement_title']); ?></h3>
-                    <p><?php echo nl2br(htmlspecialchars($announcement['announcement_details'])); ?></p>
-                    <small>Posted on: <?php echo $announcement['created_on']; ?></small>
+                    <h3 id="announcementTitle"><?php echo htmlspecialchars($announcement['announcement_title']); ?></h3>
                     <hr>
+                    <p id="announcementDetails"><?php echo nl2br(htmlspecialchars($announcement['announcement_details'])); ?></p>
+                    <small>Posted on: <?php echo $announcement['created_on']; ?></small>
                 </div>
             <?php endforeach; ?>
         <?php else: ?>

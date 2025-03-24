@@ -189,4 +189,32 @@ function getAllSitInHistoryAdmin($conn) {
     return json_encode($HistoryList);
 }
 
+function fetchStudents($conn) {
+    $sql = "SELECT * FROM users WHERE role = 'student'";
+    $result = $conn->query($sql);
+
+    // Display inside the studentContainer div
+    echo '<div id="studentContainer">';
+    
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            echo '<div class="student">';
+            echo 'ID No: ' . htmlspecialchars($row['idNo']) . '<br>';
+            echo 'First Name: ' . htmlspecialchars($row['firstName']) . '<br>';
+            echo 'Midle Name: ' . htmlspecialchars($row['middleName']) . '<br>';
+            echo 'Last Name: ' . htmlspecialchars($row['lastName']) . '<br>';
+            echo 'Email: ' . htmlspecialchars($row['email']) . '<br>';
+            echo '</div><hr>';
+        }
+    } else {
+        echo 'No students found.';
+    }
+
+    echo '</div>';
+
+    // Close connection
+    $conn->close();
+}
+
 ?>
+

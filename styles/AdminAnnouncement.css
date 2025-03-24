@@ -83,8 +83,11 @@
 }
 
 #bottom-div {
+    display: flex;
+    flex-direction: column;
+    gap: 10%;
     overflow: auto;
-    max-height: 80vh;
+    max-height: 90vh;
     scrollbar-width: none;
     padding: 0 5%;
     -ms-overflow-style: none;
@@ -116,4 +119,32 @@
 #addAnnouncement:hover {
     box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
     background-color: rgb(24, 139, 76);
+}
+
+.announcement-item {
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    margin-bottom: 2%;
+    padding: 1% 3%;
+    padding-bottom: 3%;
+}
+
+#announcementTitle {
+    font-size: xx-large;
+    margin: 0;
+    color: #0f3857;
+}
+
+hr {
+    height: 1px;
+    border-radius: 5px;
+    background-color: #d9b382;
+}
+
+#announcementDetails {
+    font-size: large;
+}
+
+small {
+    color: gray;
 }
