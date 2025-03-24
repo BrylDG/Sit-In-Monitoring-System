@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 20, 2025 at 10:00 PM
+-- Generation Time: Mar 24, 2025 at 04:20 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.0.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -50,7 +50,9 @@ INSERT INTO `announcements` (`announcement_id`, `announcement_title`, `announcem
 (7, 'tiral announcement', 'trial', '2025-03-20 10:32:32'),
 (8, 'Trial announcement 2', 'WOWOWOWOW!', '2025-03-20 11:41:22'),
 (9, 'christine gwapa', 'awwaawaw', '2025-03-20 11:41:53'),
-(10, 'waw', 'aww', '2025-03-20 17:53:39');
+(10, 'waw', 'aww', '2025-03-20 17:53:39'),
+(11, 'kobe', 'kobe', '2025-03-21 01:43:15'),
+(12, 'tiral100', 'tiraltiral', '2025-03-21 04:03:45');
 
 -- --------------------------------------------------------
 
@@ -72,7 +74,9 @@ CREATE TABLE `feedback` (
 
 INSERT INTO `feedback` (`feedbackNo`, `idNo`, `name`, `feedback`, `lab`) VALUES
 (0, '21956124', 'undefined', '123', 'undef'),
+(21052007, '23615172', 'undefined', 'wowowo', 'undef'),
 (36818903, '21956124', 'undefined', 'waw', 'undef'),
+(56141313, '22613871', 'undefined', 'WOWOWOW', 'undef'),
 (68632877, '21956124', 'undefined', 'awaw', 'undef');
 
 -- --------------------------------------------------------
@@ -91,6 +95,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`idNo`, `sessions`) VALUES
+('12345678', 30),
 ('20949194', 27),
 ('21950114', 27);
 
@@ -117,7 +122,12 @@ CREATE TABLE `sitinhistory` (
 --
 
 INSERT INTO `sitinhistory` (`idNo`, `name`, `purpose`, `lab`, `login`, `logout`, `date`, `feedbackNo`, `historyID`) VALUES
-('21956124', 'Clifford A Alferez', 'c#', '123', '04:52:15', '04:52:32', '2025-03-21', 36818903, '44344518');
+('21956124', 'Clifford A Alferez', 'c#', '123', '04:52:15', '04:52:32', '2025-03-21', 36818903, '44344518'),
+('22613871', 'Christine A Alesna', 'c#', '321', '09:05:56', '09:06:06', '2025-03-21', 56141313, '17047141'),
+('21956124', 'Clifford A Alferez', 'c#', '', '04:59:29', '09:06:09', '2025-03-21', NULL, '34149535'),
+('23615172', 'Kobe Bryan Amaro', 'c#', '123', '09:43:29', '09:43:35', '2025-03-21', 21052007, '11931249'),
+('23615172', 'Kobe Bryan Amaro', 'c#', '123', '09:52:58', '09:53:18', '2025-03-21', NULL, '96387963'),
+('23615172', 'Kobe Bryan Amaro', 'c#', '123', '12:04:15', '12:04:26', '2025-03-21', NULL, '50849408');
 
 -- --------------------------------------------------------
 
@@ -138,7 +148,7 @@ CREATE TABLE `sitintable` (
 --
 
 INSERT INTO `sitintable` (`idNo`, `student_name`, `SitInTime`, `purpose`, `lab`) VALUES
-('21956124', 'Clifford A Alferez', '2025-03-20 20:59:29', 'c#', '');
+('20949194', 'Bryl Mejeca Gorgonio', '2025-03-21 03:38:14', 'c#', '123');
 
 -- --------------------------------------------------------
 
@@ -167,11 +177,12 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`idNo`, `lastName`, `firstName`, `middleName`, `course`, `yearLevel`, `email`, `username`, `password`, `profileImage`, `created_at`, `role`) VALUES
 ('00000000', 'admin', 'admin', 'admin', 'admin', '0', 'admin@gmail.com', 'admin', 'admin', 'admin.png', '2025-03-20 08:13:33', 'admin'),
+('12345678', 'Diosana', 'Poland', 'D', 'BSIT', '2', 'poland@gmail.com', 'poland', '123', 'image.png', '2025-03-21 01:08:21', 'student'),
 ('20949194', 'Gorgonio', 'Bryl', 'Mejeca', 'BSIT', '2', 'bryl@gmail.com', 'bryl', '123', 'image.png', '2025-03-20 17:35:12', 'student'),
 ('21950114', 'Sebios', 'Jade', 'M', 'BSIT', '2', 'jade@gmail.com', 'jade', '123', 'image.png', '2025-03-20 17:32:17', 'student'),
 ('21956124', 'Alferez', 'Clifford', 'A', 'BSIT', '2', 'clifford@gmail.com', 'clifford', '123', 'clifford.png', '2025-03-19 08:13:31', 'student'),
 ('22613871', 'Alesna', 'Christine', 'A', 'BSIT', '2', 'christine@gmail.com', 'christine', '123', 'image.png', '2025-03-19 08:17:33', 'student'),
-('23615172', 'Amaro', 'Kobe', 'Bryan', 'BSIT', '1', 'kobe@gmail.com', 'kobe', '123', 'image.png', '2025-03-19 20:03:15', 'student');
+('23615172', 'Amaro', 'Kobe', 'Bryan', 'BSIT', '2', 'kobe@gmail.com', 'kobe', '123', 'image.png', '2025-03-19 20:03:15', 'student');
 
 --
 -- Indexes for dumped tables
@@ -215,7 +226,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `announcement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `announcement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
