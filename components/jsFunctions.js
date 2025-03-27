@@ -84,6 +84,11 @@ function setActiveLink(page) {
         const pageFile = page.split('/').pop();
 
         if (linkHref === pageFile) {
+            if (pageFile === "AdminStatsRep.php") {
+                document.addEventListener("DOMContentLoaded", function () {
+                    createPieChart(canvasId, labels, dataValues, ['#0088FE', '#00C49F', '#FFBB28', '#FF8042']);
+                });
+            }
             link.classList.add('active');
         } else {
             link.classList.remove('active');
@@ -524,12 +529,24 @@ function closeOverlay() {
     document.querySelector(".overlay")?.remove();
 }
 
-
-
-
-
-
-
-
-
-
+function createPieChart(canvasId, labels, dataValues, colors) {
+    const ctx = document.getElementById(canvasId).getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: labels,
+            datasets: [{
+                data: dataValues,
+                backgroundColor: colors
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top'
+                }
+            }
+        }
+    });
+}

@@ -230,5 +230,25 @@ function fetchStudents($conn) {
     $conn->close();
 }
 
+function countPurpose($conn) {
+    $languages = ['Java', 'C', 'C#', 'C++', 'Python', 'PHP', 'ASP.NET'];
+    $counts = [];
+
+    foreach ($languages as $language) {
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM sitinhistory WHERE purpose = ?");
+        $stmt->bind_param("s", $language);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        // Store in associative array
+        $counts[$language] = $count ?? 0;
+    }
+
+    return $counts;
+}
+
+
 ?>
 

@@ -38,6 +38,8 @@ if (isset($_GET['logout'])) {
   <link rel="stylesheet" href="./styles/AdminStudentList.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
 
 <body data-role="<?php echo htmlspecialchars(trim($userRole), ENT_QUOTES, 'UTF-8'); ?>">
@@ -68,5 +70,4 @@ if (isset($_GET['logout'])) {
     </div>
   </div>
 </body>
-
 </html>
