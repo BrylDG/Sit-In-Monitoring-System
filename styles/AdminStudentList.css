@@ -1,16 +1,25 @@
-.studentContainer {
+#studentContainer {
     display: flex;
-    flex-wrap: wrap;
     gap: 20px;
     flex-direction: row;
+    width: 100%;
 }
 
 .studentCard {
     display: flex;
     flex-direction: row;
     border: 1px solid #ccc;
-    padding: 15px;
+    padding: 5% 3%;
     width: 300px;
-    background-color: #f9f9f9;
+    background-color: white;
+    box-shadow: 4px 6px 12px rgba(0, 0, 0, 0.3);
     border-radius: 8px;
 }
+
+.studentListContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 5%;
+}
+
+

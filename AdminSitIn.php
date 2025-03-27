@@ -2,6 +2,8 @@
 require './components/dbFunctions.php';
 $conn = new mysqli($servername, $username, $password, $database);
 $SitInList = json_decode(getAllSitIn($conn), true);
+$HistoryListAdmin = json_decode(getAllSitInHistoryAdmin($conn), true);
+$DailyListAdmin = json_decode(getAllSitInDailyHistoryAdmin($conn), true);
 ?>
 
 <div class="SitInDiv">
@@ -10,8 +12,6 @@ $SitInList = json_decode(getAllSitIn($conn), true);
             <input type="text" id="searchInput" name="query" placeholder="Search users...">
             <div id="searchResults"></div>
         </form>
-        <button class="sitinNav" id="currentBtn" type="button">Current</button>
-        <button class="sitinNav" id="historyBtn" type="button">History</button>
 
     </div>
     <div class="bottom">
@@ -45,6 +45,78 @@ $SitInList = json_decode(getAllSitIn($conn), true);
             <p>No Sit-In.</p>
         <?php endif; ?>
     </div>
+
+    <div class="divider">
+        <hr class="divider-line"><h1 id="divider-title">Daily Sit-In</h1><hr class="divider-line">
+    </div>
+
+    <div class="History">
+        <div class="history-labels">
+            <p>History Id</p>
+            <p>Id No</p>
+            <p>Name</p>
+            <p>Purpose</p>
+            <p>Lab</p>
+            <p>Logged In</p>
+            <p>Logged Out</p>
+            <p>Session Date</p>
+        </div>
+
+        <div class="historyContainer">
+            <?php if (!empty($DailyListAdmin)): ?>
+                <?php foreach ($DailyListAdmin as $DailyListAdmin): ?>
+                    <div class="history-log" id="sitIn-<?php echo $DailyListAdmin['idNo']; ?>">
+                        <h3 style="margin-right: 7%;"><?php echo htmlspecialchars($DailyListAdmin['historyID']); ?></h3>
+                        <p style="margin-right: 7%;"><?php echo nl2br(htmlspecialchars($DailyListAdmin['idNo'])); ?></p>
+                        <p style="margin-right: 10%;"><?php echo nl2br(htmlspecialchars($DailyListAdmin['name'])); ?></p>
+                        <p style="margin-right: 12%;"><?php echo nl2br(htmlspecialchars($DailyListAdmin['purpose'])); ?></p>
+                        <p style="margin-right: 10%;"><?php echo nl2br(htmlspecialchars($DailyListAdmin['lab'])); ?></p>
+                        <small style="margin-right: 11%;"><?php echo $DailyListAdmin['login']; ?></small>
+                        <small style="margin-right: 11%;"><?php echo $DailyListAdmin['logout']; ?></small>
+                        <small><?php echo $DailyListAdmin['date']; ?></small>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No Sit-In.</p>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <div class="divider">
+        <hr class="divider-line"><h1 id="divider-title">Sit-In History</h1><hr class="divider-line">
+    </div>
+
+    <div class="History">
+        <div class="history-labels">
+            <p>History Id</p>
+            <p>Id No</p>
+            <p>Name</p>
+            <p>Purpose</p>
+            <p>Lab</p>
+            <p>Logged In</p>
+            <p>Logged Out</p>
+            <p>Session Date</p>
+        </div>
+        
+        <div class="historyContainer">
+            <?php if (!empty($HistoryListAdmin)): ?>
+                <?php foreach ($HistoryListAdmin as $HistoryListAdmin): ?>
+                    <div class="history-log" id="sitIn-<?php echo $HistoryListAdmin['idNo']; ?>">
+                        <h3 style="margin-right: 7%;"><?php echo htmlspecialchars($HistoryListAdmin['historyID']); ?></h3>
+                        <p style="margin-right: 7%;"><?php echo nl2br(htmlspecialchars($HistoryListAdmin['idNo'])); ?></p>
+                        <p style="margin-right: 10%;"><?php echo nl2br(htmlspecialchars($HistoryListAdmin['name'])); ?></p>
+                        <p style="margin-right: 12%;"><?php echo nl2br(htmlspecialchars($HistoryListAdmin['purpose'])); ?></p>
+                        <p style="margin-right: 10%;"><?php echo nl2br(htmlspecialchars($HistoryListAdmin['lab'])); ?></p>
+                        <small style="margin-right: 11%;"><?php echo $HistoryListAdmin['login']; ?></small>
+                        <small style="margin-right: 11%;"><?php echo $HistoryListAdmin['logout']; ?></small>
+                        <small><?php echo $HistoryListAdmin['date']; ?></small>
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p>No Sit-In.</p>
+            <?php endif; ?>
+        </div>
+    </div>
 </div>
 
 <script>
@@ -71,28 +143,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 })
                 .catch(error => console.error('Error:', error));
             }
-        }
-
-        // History button functionality
-        if (event.target.id === "historyBtn") {
-            console.log("History button clicked!");
-            fetch('./components/sitinHistory.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.querySelector('.bottom').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading history:', error));
-        }
-
-        // Current button functionality
-        if (event.target.id === "currentBtn") {
-            console.log("Current button clicked!");
-            fetch('./components/sitinCurrent.php')
-                .then(response => response.text())
-                .then(data => {
-                    document.querySelector('.bottom').innerHTML = data;
-                })
-                .catch(error => console.error('Error loading current:', error));
         }
     });
 

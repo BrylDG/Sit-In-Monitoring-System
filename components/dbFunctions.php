@@ -189,6 +189,20 @@ function getAllSitInHistoryAdmin($conn) {
     return json_encode($HistoryList);
 }
 
+    function getAllSitInDailyHistoryAdmin($conn) {
+        $sql = "SELECT * FROM SitInHistory WHERE date = CURRENT_DATE ORDER BY date, logout, login DESC";
+        $result = $conn->query($sql);
+
+        $HistoryList = array();
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $HistoryList[] = $row;
+            }
+        }
+        return json_encode($HistoryList);
+    }
+
+
 function fetchStudents($conn) {
     $sql = "SELECT * FROM users WHERE role = 'student'";
     $result = $conn->query($sql);
@@ -198,13 +212,13 @@ function fetchStudents($conn) {
     
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
-            echo '<div class="student">';
+            echo '<div class="studentCard">';
             echo 'ID No: ' . htmlspecialchars($row['idNo']) . '<br>';
             echo 'First Name: ' . htmlspecialchars($row['firstName']) . '<br>';
             echo 'Midle Name: ' . htmlspecialchars($row['middleName']) . '<br>';
             echo 'Last Name: ' . htmlspecialchars($row['lastName']) . '<br>';
             echo 'Email: ' . htmlspecialchars($row['email']) . '<br>';
-            echo '</div><hr>';
+            echo '</div>';
         }
     } else {
         echo 'No students found.';
