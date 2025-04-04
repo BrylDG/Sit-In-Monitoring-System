@@ -360,3 +360,18 @@ form {
 #emailContainer {
     width: 63%;
 }
+
+.StatsContainer{
+display: flex;
+flex-direction: row;
+}
+
+.PurposeChart, .LabChart{
+    width: 20%;
+    height: 20%;
+}
+
+.DayChart {
+    width: 40%;
+    height: 40%;
+}

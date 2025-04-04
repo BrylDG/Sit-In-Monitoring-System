@@ -1,72 +1,96 @@
 <?php
-require '../components/dbFunctions.php'; // ✅ Ensure correct path
+require '../components/dbFunctions.php';
 header('Content-Type: application/json');
 
-// ✅ Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// ✅ Check if database connection exists
 if (!$conn) {
     echo json_encode(["error" => "Database connection failed"]);
     exit;
 }
 
-// ✅ Validate POST request
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['idNo']) && isset($_POST['feedback']) && isset($_POST['name']) && isset($_POST['lab'])) {
+if (
+    $_SERVER['REQUEST_METHOD'] === 'POST' &&
+    isset($_POST['idNo'], $_POST['feedback'], $_POST['name'], $_POST['lab'], $_POST['purpose'])
+) {
     $idNo = trim($_POST['idNo']);
     $feedback = trim($_POST['feedback']);
     $name = trim($_POST['name']);
     $lab = trim($_POST['lab']);
+    $purpose = trim($_POST['purpose']);
 
-    // ✅ Check if values are empty
-    if (empty($idNo) || empty($feedback) || empty($name) || empty($lab)) {
-        echo json_encode(["error" => "All fields are required"]);
+    if (empty($idNo) || empty($feedback) || empty($name) || empty($lab) || empty($purpose)) {
+        echo json_encode([
+            "error" => "All fields are required",
+            "idNo" => $idNo,
+            "lab" => $lab,
+            "purpose" => $purpose
+        ]);
         exit;
     }
 
-    // ✅ Generate a random 9-digit feedback number
-    $feedbackNo = mt_rand(10000000, 99999999); // Generates a number between 100000000 - 999999999
+    // ✅ Basic list of explicit/bad words
+    $badWords = ['fuck', 'shit', 'bitch', 'asshole', 'bastard', 'damn', 'crap', 'dick', 'piss', 'slut', 'yawa', 'pisti', 'boang', 'bogo'];
 
-    // ✅ Start transaction
+    $explicit = 'no'; // Default
+    foreach ($badWords as $word) {
+        if (preg_match("/\b" . preg_quote($word, '/') . "\b/i", $feedback)) {
+            $explicit = 'yes';
+            break;
+        }
+    }
+
+    // ✅ Generate feedback number
+    $feedbackNo = mt_rand(100000000, 999999999);
+
     $conn->begin_transaction();
 
     try {
-        // ✅ Insert feedback into feedback table
-        $stmt = $conn->prepare("INSERT INTO feedback (feedbackNo, idNo, feedback, lab, name) VALUES (?, ?, ?, ?, ?)");
+        // ✅ Insert feedback
+        $stmt = $conn->prepare("INSERT INTO feedback (feedbackNo, idNo, feedback, lab, purpose, name, explicit) VALUES (?, ?, ?, ?, ?, ?, ?)");
         if (!$stmt) {
             throw new Exception("Error preparing insert statement: " . $conn->error);
         }
-        $stmt->bind_param("sssss", $feedbackNo, $idNo, $feedback, $lab, $name);
+        $stmt->bind_param("sssssss", $feedbackNo, $idNo, $feedback, $lab, $purpose, $name, $explicit);
         if (!$stmt->execute()) {
             throw new Exception("Error executing insert statement: " . $stmt->error);
         }
         $stmt->close();
 
-        // ✅ Update feedbackNo in SitInHistory table
-        $stmt = $conn->prepare("UPDATE SitInHistory SET feedbackNo = ? WHERE idNo = ?");
+        // ✅ Update SitInHistory with feedback number
+        $stmt = $conn->prepare("UPDATE SitInHistory SET feedbackNo = ? WHERE idNo = ? AND lab = ? AND purpose = ?");
         if (!$stmt) {
             throw new Exception("Error preparing update statement: " . $conn->error);
         }
-        $stmt->bind_param("ss", $feedbackNo, $idNo);
+        $stmt->bind_param("ssss", $feedbackNo, $idNo, $lab, $purpose);
         if (!$stmt->execute()) {
             throw new Exception("Error executing update statement: " . $stmt->error);
         }
+        if ($stmt->affected_rows === 0) {
+            throw new Exception("No matching SitInHistory record found to update.");
+        }
         $stmt->close();
 
-        // ✅ Commit transaction
         $conn->commit();
 
-        echo json_encode(["success" => "Feedback submitted successfully!", "feedbackNo" => $feedbackNo]);
+        echo json_encode([
+            "success" => "Feedback submitted successfully!",
+            "feedbackNo" => $feedbackNo,
+            "explicit" => $explicit
+        ]);
         exit;
 
     } catch (Exception $e) {
-        // ❌ Rollback if any error occurs
         $conn->rollback();
-        echo json_encode(["error" => $e->getMessage()]);
+        echo json_encode([
+            "error" => $e->getMessage(),
+            "idNo" => $idNo,
+            "lab" => $lab,
+            "purpose" => $purpose
+        ]);
         exit;
     }
 } else {
     echo json_encode(["error" => "Invalid request"]);
 }
-?>

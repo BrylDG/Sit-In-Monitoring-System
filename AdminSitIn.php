@@ -12,7 +12,7 @@ $DailyListAdmin = json_decode(getAllSitInDailyHistoryAdmin($conn), true);
             <input type="text" id="searchInput" name="query" placeholder="Search users...">
             <div id="searchResults"></div>
         </form>
-
+        <button class="download" id='history'>Download Reports</button>
     </div>
     <div class="bottom">
         <?php if (!empty($SitInList)): ?>

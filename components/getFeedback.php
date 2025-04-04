@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 if (isset($_GET['feedbackNo'])) {
     $feedbackNo = $_GET['feedbackNo'];
 
-    $stmt = $conn->prepare("SELECT feedback FROM feedback WHERE feedbackNo = ?");
+    $stmt = $conn->prepare("SELECT feedback, explicit FROM feedback WHERE feedbackNo = ?");
     if (!$stmt) {
         echo json_encode(["error" => "Error preparing statement: " . $conn->error]);
         exit;
@@ -15,7 +15,7 @@ if (isset($_GET['feedbackNo'])) {
     $result = $stmt->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        echo json_encode(["success" => true, "feedback" => $row['feedback']]);
+        echo json_encode(["success" => true, "feedback" => $row['feedback'], "explicit" => $row['explicit']]);
     } else {
         echo json_encode(["error" => "No feedback found"]);
     }

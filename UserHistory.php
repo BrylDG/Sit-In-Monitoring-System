@@ -23,7 +23,7 @@ $HistoryList = json_decode(getAllSitInHistory($conn, $idNo), true);
                     <small><?php echo $Historylist['date']; ?></small>
                     <small><?php echo $Historylist['logout']; ?></small>
                     <br>
-                    <button class="feedback-btn" data-id="<?php echo $Historylist['idNo']; ?>" data-name="<?php echo $Historylist['name']; ?>" data-lab="<?php echo $Historylist['lab']; ?>" data-feedbackNo="<?php echo $Historylist['feedbackNo']; ?>">Feedback</button>
+                    <button class="feedback-btn" data-id="<?php echo $Historylist['idNo']; ?>" data-name="<?php echo $Historylist['name']; ?>" data-lab="<?php echo $Historylist['lab']; ?>" data-feedbackNo="<?php echo $Historylist['feedbackNo']; ?>" data-purpose="<?php echo $Historylist['purpose'];?>">Feedback</button>
                     <hr>
                 </div>
             <?php endforeach; ?>
