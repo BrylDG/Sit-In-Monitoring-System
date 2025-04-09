@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2025 at 07:01 PM
+-- Generation Time: Apr 09, 2025 at 06:44 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `sitinmonitoringsystem`
 --
+DROP DATABASE IF EXISTS `sitinmonitoringsystem`;
 CREATE DATABASE IF NOT EXISTS `sitinmonitoringsystem` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `sitinmonitoringsystem`;
 
@@ -47,8 +48,17 @@ CREATE TABLE `feedback` (
   `idNo` varchar(10) NOT NULL,
   `name` varchar(50) NOT NULL,
   `feedback` varchar(500) NOT NULL,
-  `lab` varchar(5) NOT NULL
+  `lab` varchar(5) NOT NULL,
+  `purpose` set('Java','C','C#','C++','Python','PHP','ASP.NET') NOT NULL,
+  `explicit` set('yes','no') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `feedback`
+--
+
+INSERT INTO `feedback` (`feedbackNo`, `idNo`, `name`, `feedback`, `lab`, `purpose`, `explicit`) VALUES
+(925248329, '20949194', 'Bryl M Gorgonio', 'bogo', '530', 'C#', 'yes');
 
 -- --------------------------------------------------------
 
@@ -60,6 +70,13 @@ CREATE TABLE `sessions` (
   `idNo` varchar(10) NOT NULL,
   `sessions` int(11) NOT NULL DEFAULT 30
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sessions`
+--
+
+INSERT INTO `sessions` (`idNo`, `sessions`) VALUES
+('20949194', 26);
 
 -- --------------------------------------------------------
 
@@ -78,6 +95,14 @@ CREATE TABLE `sitinhistory` (
   `feedbackNo` int(11) DEFAULT NULL,
   `historyID` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `sitinhistory`
+--
+
+INSERT INTO `sitinhistory` (`idNo`, `name`, `purpose`, `lab`, `login`, `logout`, `date`, `feedbackNo`, `historyID`) VALUES
+('20949194', 'Bryl M Gorgonio', 'C#', '530', '11:29:46', '11:29:50', '2025-04-04', 925248329, '34170982'),
+('20949194', 'Bryl M Gorgonio', 'C#', '526', '11:32:12', '12:20:49', '2025-04-04', NULL, '48319567');
 
 -- --------------------------------------------------------
 
@@ -119,7 +144,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`idNo`, `lastName`, `firstName`, `middleName`, `course`, `yearLevel`, `email`, `username`, `password`, `profileImage`, `created_at`, `role`) VALUES
-('00000000', 'admin', 'admin', 'admin', 'admin', '0', 'admin@gmail.com', 'admin', 'admin', 'admin.png', '2025-03-20 08:13:33', 'admin');
+('00000000', 'admin', 'admin', 'admin', 'admin', '0', 'admin@gmail.com', 'admin', 'admin', 'admin.png', '2025-03-20 08:13:33', 'admin'),
+('20949194', 'Gorgonio', 'Bryl', 'M', 'BSIT', '1', 'brylgorgonio@gmail.com', 'bryl', '123', 'image.png', '2025-03-28 01:40:14', 'student');
 
 --
 -- Indexes for dumped tables
