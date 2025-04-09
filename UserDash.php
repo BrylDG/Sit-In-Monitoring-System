@@ -47,6 +47,7 @@ if (isset($_GET['logout'])) {
           <li><a href="UserAnnouncements.php" onclick="changeDashboard('UserAnnouncements.php'); return false;">Announcements</a></li>
           <li><a href="UserHistory.php" onclick="changeDashboard('UserHistory.php'); return false;">History</a></li>
           <li><a href="UserReservation.php" onclick="changeDashboard('UserReservation.php'); return false;">Reservation</a></li>
+          <li><a href="UserResources.php" onclick="changeDashboard('UserResources.php'); return false;">Recources</a></li>
           <li id="Profile">
             <a href="#!" onclick="toggleDropdown(event)">
               <img src="./assets/profileIcon.jpg" alt="Profile Icon" id="Profile_Icon" />
