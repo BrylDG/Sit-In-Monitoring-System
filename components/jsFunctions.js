@@ -28,7 +28,8 @@ function changeDashboard(page) {
                 "AdminStatsRep.php": "Statistics & Reports",
                 "AdminStudentList.php": "Student List",
                 "AdminResources.php": "Resources",
-                "UserProfile.php": "Profile"
+                "UserProfile.php": "Profile",
+                "Leaderboard.php": "Leaderboard"
             };
 
             const pageTitles = (userRole === "student") ? studentPages : adminPages;
@@ -810,6 +811,26 @@ document.addEventListener("click", function (event) {
     }
 });
 
+function showFeedbackForm(idNo, name, lab, purpose) {
+    let overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+
+    overlay.innerHTML = `
+        <div class="feedback-modal">
+            <h2>Submit Feedback</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Lab:</strong> ${lab}</p>
+            <p><strong>Purpose:</strong> ${purpose}</p>
+            <textarea id="feedbackText" placeholder="Enter your feedback..."></textarea>
+            <br>
+            <button onclick="submitFeedback('${idNo}', '${name}', '${lab}', '${purpose}')">Submit</button>
+            <button onclick="closeOverlay()">Cancel</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+}
+
 // ✅ Function to submit feedback
 function submitFeedback(idNo, name, lab, purpose) {
     let feedbackText = document.getElementById("feedbackText").value;
@@ -869,7 +890,7 @@ function fetchFeedback(feedbackNo) {
 
                 // Add content to the modal
                 feedbackModal.innerHTML = `
-                    <h2>Previous Feedback</h2>
+                    <h2>Feedback</h2>
                     <p>${data.feedback}</p>
                     <button onclick="closeOverlay()">Close</button>
                 `;
@@ -1080,6 +1101,7 @@ document.addEventListener("click", function (event) {
         console.log("Button-Clicked!");
         const resetType = event.target.value; // Use the clicked button's value
         fetch(`./components/resetSessions.php?resetType=${resetType}`);
+        this.location.reload();
     }
 });
 
@@ -1117,5 +1139,6 @@ document.addEventListener("click", function (event) {
                 })
                 .catch(error => console.error('Fetch Error:', error));
         }
+        this.location.reload();
     }
 });
