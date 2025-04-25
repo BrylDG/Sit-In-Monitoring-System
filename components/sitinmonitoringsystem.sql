@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 24, 2025 at 06:02 PM
+-- Generation Time: Apr 25, 2025 at 04:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -68,6 +68,33 @@ INSERT INTO `feedback` (`feedbackNo`, `idNo`, `name`, `feedback`, `lab`, `purpos
 (641156572, '20949194', 'Bryl M Gorgonio', 'bogo', '530', 'PHP', 'yes'),
 (944139097, '23615172', 'Christine A Alesna', 'wow', '530', 'Java', 'no'),
 (958054137, '20949194', 'Bryl M Gorgonio', 'wowowow', '526', 'C#', 'no');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `labschedules`
+--
+
+CREATE TABLE `labschedules` (
+  `lab_no` int(11) NOT NULL,
+  `open_time` time NOT NULL,
+  `close_time` time NOT NULL,
+  `status` set('Open','Closed') NOT NULL,
+  `manually_closed` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `labschedules`
+--
+
+INSERT INTO `labschedules` (`lab_no`, `open_time`, `close_time`, `status`, `manually_closed`) VALUES
+(524, '08:00:00', '19:00:00', 'Open', 0),
+(526, '07:30:00', '17:00:00', 'Open', 0),
+(528, '08:00:00', '17:00:00', 'Open', 0),
+(530, '07:30:00', '17:00:00', 'Open', 0),
+(542, '07:30:00', '19:00:00', 'Open', 0),
+(544, '08:00:00', '19:00:00', 'Open', 0),
+(517, '07:30:00', '17:00:00', 'Open', 0);
 
 -- --------------------------------------------------------
 
