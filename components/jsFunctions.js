@@ -1111,42 +1111,61 @@ document.addEventListener("click", function (event) {
 });
 
 // SIGNOUT BUTTON //
-document.addEventListener("click", function (event) {
-    if (event.target.classList.contains("signout-btn")) {
-        let idNo = event.target.getAttribute("data-id");
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+        if (event.target.classList.contains("signout-btn")) {
+            let idNo = event.target.getAttribute("data-id");
+            let studentId = event.target.getAttribute("data-student-id");
 
-        if (confirm("Are you sure you want to sign out this user?")) {
-            fetch('./components/deleteSitIn.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: 'idNo=' + encodeURIComponent(idNo)
-            })
-                .then(response => response.text()) // ✅ Get raw response for debugging
-                .then(text => {
-                    console.log("Raw Response:", text); // ✅ Debugging
-
-                    try {
-                        return JSON.parse(text); // ✅ Parse JSON only if valid
-                    } catch (error) {
-                        console.error("JSON Parsing Error:", error, "\nResponse was:", text);
-                        alert("Unexpected response from server. Check console for details.");
-                        return { error: "Invalid JSON response" }; // Prevent UI crash
-                    }
+            if (confirm("Are you sure you want to sign out this user?")) {
+                // Step 1: Sign Out the User
+                fetch('./components/deleteSitIn.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'idNo=' + encodeURIComponent(idNo)
                 })
+                .then(response => response.json())
                 .then(data => {
                     if (data.success) {
                         alert("User signed out successfully!");
-                        document.getElementById("sitIn-" + idNo).remove(); // ✅ Remove entry from UI
+
+                        // Step 2: Ask to give a point
+                        if (confirm("Do you want to give this student 1 point?")) {
+                            fetch('./components/givePoint.php', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: 'student_id=' + encodeURIComponent(studentId)
+                            })
+                            .then(res => res.json())
+                            .then(resData => {
+                                if (resData.success) {
+                                    alert("1 point awarded to student.");
+                                } else {
+                                    alert("Failed to award point: " + resData.error);
+                                }
+                            })
+                            .catch(err => {
+                                console.error("Error giving point:", err);
+                                alert("Something went wrong while giving the point.");
+                            });
+                        }
+
+                        location.reload(); // Reload after sign out
                     } else {
                         alert("Error: " + data.error);
-                        console.error("Error Details:", data.error);
                     }
                 })
-                .catch(error => console.error('Fetch Error:', error));
+                .catch(error => console.error('Sign-out Error:', error));
+            }
         }
-        this.location.reload();
-    }
+    });
 });
+
+
+// LOGOUT BUTTON //
+function logout() {
+    window.location.href = 'index.php';
+}
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

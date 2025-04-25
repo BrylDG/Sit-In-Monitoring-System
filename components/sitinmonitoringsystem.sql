@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 25, 2025 at 04:19 AM
+-- Generation Time: Apr 25, 2025 at 05:15 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -35,13 +35,7 @@ CREATE TABLE `announcements` (
   `announcement_details` varchar(500) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `announcements`
---
-
-INSERT INTO `announcements` (`announcement_id`, `announcement_title`, `announcement_details`, `created_on`) VALUES
-(13, 'Trial', 'Trial', '2025-04-11 03:00:11');
+-- Error reading data for table sitinmonitoringsystem.announcements: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`announcements`' at line 1
 
 -- --------------------------------------------------------
 
@@ -58,16 +52,7 @@ CREATE TABLE `feedback` (
   `purpose` set('Java','C','C#','C++','Python','PHP','ASP.NET') NOT NULL,
   `explicit` set('yes','no') DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `feedback`
---
-
-INSERT INTO `feedback` (`feedbackNo`, `idNo`, `name`, `feedback`, `lab`, `purpose`, `explicit`) VALUES
-(563409355, '12345678', 'Kobe A Amaro', 'Bogo kaau ang pc sa lab 526', '526', 'Python', 'yes'),
-(641156572, '20949194', 'Bryl M Gorgonio', 'bogo', '530', 'PHP', 'yes'),
-(944139097, '23615172', 'Christine A Alesna', 'wow', '530', 'Java', 'no'),
-(958054137, '20949194', 'Bryl M Gorgonio', 'wowowow', '526', 'C#', 'no');
+-- Error reading data for table sitinmonitoringsystem.feedback: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`feedback`' at line 1
 
 -- --------------------------------------------------------
 
@@ -82,19 +67,7 @@ CREATE TABLE `labschedules` (
   `status` set('Open','Closed') NOT NULL,
   `manually_closed` tinyint(1) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `labschedules`
---
-
-INSERT INTO `labschedules` (`lab_no`, `open_time`, `close_time`, `status`, `manually_closed`) VALUES
-(524, '08:00:00', '19:00:00', 'Open', 0),
-(526, '07:30:00', '17:00:00', 'Open', 0),
-(528, '08:00:00', '17:00:00', 'Open', 0),
-(530, '07:30:00', '17:00:00', 'Open', 0),
-(542, '07:30:00', '19:00:00', 'Open', 0),
-(544, '08:00:00', '19:00:00', 'Open', 0),
-(517, '07:30:00', '17:00:00', 'Open', 0);
+-- Error reading data for table sitinmonitoringsystem.labschedules: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`labschedules`' at line 1
 
 -- --------------------------------------------------------
 
@@ -104,17 +77,11 @@ INSERT INTO `labschedules` (`lab_no`, `open_time`, `close_time`, `status`, `manu
 
 CREATE TABLE `sessions` (
   `idNo` varchar(10) NOT NULL,
-  `sessions` int(11) NOT NULL DEFAULT 30
+  `sessions` int(11) NOT NULL DEFAULT 30,
+  `points` int(11) NOT NULL,
+  `TotalPoints` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `sessions`
---
-
-INSERT INTO `sessions` (`idNo`, `sessions`) VALUES
-('12345678', 30),
-('20949194', 30),
-('23615172', 30);
+-- Error reading data for table sitinmonitoringsystem.sessions: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`sessions`' at line 1
 
 -- --------------------------------------------------------
 
@@ -134,19 +101,7 @@ CREATE TABLE `sitinhistory` (
   `historyID` varchar(10) NOT NULL,
   `Duration` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `sitinhistory`
---
-
-INSERT INTO `sitinhistory` (`idNo`, `name`, `purpose`, `lab`, `login`, `logout`, `date`, `feedbackNo`, `historyID`, `Duration`) VALUES
-('20949194', 'Bryl M Gorgonio', 'C#', '526', '10:00:48', '10:25:03', '2025-04-11', 958054137, '33239527', '00:24:15'),
-('12345678', 'Kobe A Amaro', 'Python', '526', '10:31:43', '10:42:20', '2025-04-11', 563409355, '88595783', '00:10:37'),
-('20949194', 'Bryl M Gorgonio', 'PHP', '530', '10:32:10', '10:42:25', '2025-04-11', 641156572, '18943341', '00:10:15'),
-('23615172', 'Christine A Alesna', 'Java', '530', '10:31:53', '10:43:06', '2025-04-11', 944139097, '35598391', '00:11:13'),
-('20949194', 'Bryl M Gorgonio', 'C++', '', '11:04:00', '11:04:05', '2025-04-11', NULL, '73059548', '00:00:05'),
-('12345678', 'Kobe A Amaro', 'PHP', '526', '11:04:38', '11:04:42', '2025-04-11', NULL, '46617010', '00:00:04'),
-('20949194', 'Bryl M Gorgonio', 'PHP', '526', '11:04:27', '11:04:44', '2025-04-11', NULL, '40319154', '00:00:17');
+-- Error reading data for table sitinmonitoringsystem.sitinhistory: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`sitinhistory`' at line 1
 
 -- --------------------------------------------------------
 
@@ -161,6 +116,7 @@ CREATE TABLE `sitintable` (
   `purpose` set('Java','C','C#','C++','Python','PHP','ASP.NET') NOT NULL,
   `lab` set('524','526','530') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+-- Error reading data for table sitinmonitoringsystem.sitintable: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`sitintable`' at line 1
 
 -- --------------------------------------------------------
 
@@ -182,16 +138,7 @@ CREATE TABLE `users` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `role` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`idNo`, `lastName`, `firstName`, `middleName`, `course`, `yearLevel`, `email`, `username`, `password`, `profileImage`, `created_at`, `role`) VALUES
-('00000000', 'admin', 'admin', 'admin', 'admin', '0', 'admin@gmail.com', 'admin', 'admin', 'admin.png', '2025-03-20 08:13:33', 'admin'),
-('12345678', 'Amaro', 'Kobe', 'A', 'BSCS', '1', 'kobe@gmail.com', 'kobe', '123', 'image.png', '2025-04-11 02:31:26', 'student'),
-('20949194', 'Gorgonio', 'Bryl', 'M', 'BSIT', '1', 'brylgorgonio@gmail.com', 'bryl', '123', 'image.png', '2025-03-28 01:40:14', 'student'),
-('23615172', 'Alesna', 'Christine', 'A', 'BSIT', '2', 'christine@gmail.com', 'christine', '123', 'image.png', '2025-04-11 02:31:04', 'student');
+-- Error reading data for table sitinmonitoringsystem.users: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `sitinmonitoringsystem`.`users`' at line 1
 
 --
 -- Indexes for dumped tables

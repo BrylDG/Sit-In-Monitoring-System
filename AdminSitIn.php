@@ -37,7 +37,10 @@ $DailyListAdmin = json_decode(getAllSitInDailyHistoryAdmin($conn), true);
                     <hr>
                     <div class="sitinBottom">
                         <small><?php echo $SitInlist['SitInTime']; ?></small>
-                        <button class="signout-btn" data-id="<?php echo $SitInlist['idNo']; ?>">Sign Out</button>
+                        <button class="signout-btn" 
+        data-id="<?php echo $SitInlist['idNo']; ?>" 
+        data-student-id="<?php echo $SitInlist['idNo']; ?>">Sign Out</button>
+
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -121,12 +124,13 @@ $DailyListAdmin = json_decode(getAllSitInDailyHistoryAdmin($conn), true);
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-
-    // Sign Out button functionality
     document.addEventListener("click", function (event) {
         if (event.target.classList.contains("signout-btn")) {
             let idNo = event.target.getAttribute("data-id");
+            let studentId = event.target.getAttribute("data-student-id");
+
             if (confirm("Are you sure you want to sign out this user?")) {
+                // Step 1: Sign Out the User
                 fetch('./components/deleteSitIn.php', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -136,15 +140,37 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     if (data.success) {
                         alert("User signed out successfully!");
-                        location.reload(); // ✅ Reload the page
+
+                        // Step 2: Ask to give a point
+                        if (confirm("Do you want to give this student 1 point?")) {
+                            fetch('./components/givePoint.php', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                body: 'student_id=' + encodeURIComponent(studentId)
+                            })
+                            .then(res => res.json())
+                            .then(resData => {
+                                if (resData.success) {
+                                    alert("1 point awarded to student.");
+                                } else {
+                                    alert("Failed to award point: " + resData.error);
+                                }
+                            })
+                            .catch(err => {
+                                console.error("Error giving point:", err);
+                                alert("Something went wrong while giving the point.");
+                            });
+                        }
+
+                        location.reload(); // Reload after sign out
                     } else {
                         alert("Error: " + data.error);
                     }
                 })
-                .catch(error => console.error('Error:', error));
+                .catch(error => console.error('Sign-out Error:', error));
             }
         }
     });
-
 });
+
 </script>

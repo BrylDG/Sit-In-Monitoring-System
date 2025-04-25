@@ -13,7 +13,6 @@ ul {
     flex-direction: row;
     align-items: center;
     justify-self: end;
-    width: auto;
     justify-content: space-between;
 }
 

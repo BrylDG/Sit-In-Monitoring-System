@@ -1,24 +1,28 @@
 <?php
-$conn = new mysqli("localhost", "root", "", "sitinmonitoringsystem");
-date_default_timezone_set('Asia/Manila');
-$currentTime = date('H:i:s');
-
-// Open labs only at their open time (if they were manually closed)
-$conn->query("
-    UPDATE labschedules 
-    SET status = 'Open', manually_closed = 0 
-    WHERE manually_closed = 1 AND TIME('$currentTime') >= open_time AND TIME('$currentTime') < ADDTIME(open_time, '00:01:00')
-");
-
-// Close labs that are outside of schedule and not manually reopened
-$conn->query("
-    UPDATE labschedules 
-    SET status = 'Closed' 
-    WHERE manually_closed = 0 AND (TIME('$currentTime') < open_time OR TIME('$currentTime') > close_time)
-");
-?>
-
-
+ require './components/dbFunctions.php';
+ $conn = new mysqli($servername, $username, $password, $database);
+ $userData = getProfile($conn);
+ $userRole = isset($userData['role']) ? $userData['role'] : 'student';
+ 
+ if ($_SERVER["REQUEST_METHOD"] == "POST") {
+   $idNo = $_POST['idNo'];
+   $firstName = $_POST['firstName'];
+   $lastName = $_POST['lastName'];
+   $middleName = $_POST['middleName'];
+   $course = $_POST['course']; 
+   $yearLevel = $_POST['yearLevel'];
+   $email = $_POST['email'];
+   $username = $_POST['username'];
+   updateUser($conn, $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username);
+ }
+ $conn->close();
+ 
+ if (isset($_GET['logout'])) {
+   logout();
+ }
+ 
+ ?>
+ 
 <!DOCTYPE html>
 <html lang="en">
 
