@@ -7,4 +7,5 @@ $conn = new mysqli($servername, $username, $password, $database);
         <?php
                 fetchStudents($conn);
         ?>
+<button class="reset-btn" value="All">Reset All Sessions</button>'
 </div>

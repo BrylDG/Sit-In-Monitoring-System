@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 09, 2025 at 06:44 AM
+-- Generation Time: Apr 24, 2025 at 06:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -20,7 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `sitinmonitoringsystem`
 --
-DROP DATABASE IF EXISTS `sitinmonitoringsystem`;
 CREATE DATABASE IF NOT EXISTS `sitinmonitoringsystem` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `sitinmonitoringsystem`;
 
@@ -36,6 +35,13 @@ CREATE TABLE `announcements` (
   `announcement_details` varchar(500) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`announcement_id`, `announcement_title`, `announcement_details`, `created_on`) VALUES
+(13, 'Trial', 'Trial', '2025-04-11 03:00:11');
 
 -- --------------------------------------------------------
 
@@ -58,7 +64,10 @@ CREATE TABLE `feedback` (
 --
 
 INSERT INTO `feedback` (`feedbackNo`, `idNo`, `name`, `feedback`, `lab`, `purpose`, `explicit`) VALUES
-(925248329, '20949194', 'Bryl M Gorgonio', 'bogo', '530', 'C#', 'yes');
+(563409355, '12345678', 'Kobe A Amaro', 'Bogo kaau ang pc sa lab 526', '526', 'Python', 'yes'),
+(641156572, '20949194', 'Bryl M Gorgonio', 'bogo', '530', 'PHP', 'yes'),
+(944139097, '23615172', 'Christine A Alesna', 'wow', '530', 'Java', 'no'),
+(958054137, '20949194', 'Bryl M Gorgonio', 'wowowow', '526', 'C#', 'no');
 
 -- --------------------------------------------------------
 
@@ -76,7 +85,9 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`idNo`, `sessions`) VALUES
-('20949194', 26);
+('12345678', 30),
+('20949194', 30),
+('23615172', 30);
 
 -- --------------------------------------------------------
 
@@ -93,16 +104,22 @@ CREATE TABLE `sitinhistory` (
   `logout` time DEFAULT curtime(),
   `date` date DEFAULT curdate(),
   `feedbackNo` int(11) DEFAULT NULL,
-  `historyID` varchar(10) NOT NULL
+  `historyID` varchar(10) NOT NULL,
+  `Duration` time NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `sitinhistory`
 --
 
-INSERT INTO `sitinhistory` (`idNo`, `name`, `purpose`, `lab`, `login`, `logout`, `date`, `feedbackNo`, `historyID`) VALUES
-('20949194', 'Bryl M Gorgonio', 'C#', '530', '11:29:46', '11:29:50', '2025-04-04', 925248329, '34170982'),
-('20949194', 'Bryl M Gorgonio', 'C#', '526', '11:32:12', '12:20:49', '2025-04-04', NULL, '48319567');
+INSERT INTO `sitinhistory` (`idNo`, `name`, `purpose`, `lab`, `login`, `logout`, `date`, `feedbackNo`, `historyID`, `Duration`) VALUES
+('20949194', 'Bryl M Gorgonio', 'C#', '526', '10:00:48', '10:25:03', '2025-04-11', 958054137, '33239527', '00:24:15'),
+('12345678', 'Kobe A Amaro', 'Python', '526', '10:31:43', '10:42:20', '2025-04-11', 563409355, '88595783', '00:10:37'),
+('20949194', 'Bryl M Gorgonio', 'PHP', '530', '10:32:10', '10:42:25', '2025-04-11', 641156572, '18943341', '00:10:15'),
+('23615172', 'Christine A Alesna', 'Java', '530', '10:31:53', '10:43:06', '2025-04-11', 944139097, '35598391', '00:11:13'),
+('20949194', 'Bryl M Gorgonio', 'C++', '', '11:04:00', '11:04:05', '2025-04-11', NULL, '73059548', '00:00:05'),
+('12345678', 'Kobe A Amaro', 'PHP', '526', '11:04:38', '11:04:42', '2025-04-11', NULL, '46617010', '00:00:04'),
+('20949194', 'Bryl M Gorgonio', 'PHP', '526', '11:04:27', '11:04:44', '2025-04-11', NULL, '40319154', '00:00:17');
 
 -- --------------------------------------------------------
 
@@ -145,7 +162,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`idNo`, `lastName`, `firstName`, `middleName`, `course`, `yearLevel`, `email`, `username`, `password`, `profileImage`, `created_at`, `role`) VALUES
 ('00000000', 'admin', 'admin', 'admin', 'admin', '0', 'admin@gmail.com', 'admin', 'admin', 'admin.png', '2025-03-20 08:13:33', 'admin'),
-('20949194', 'Gorgonio', 'Bryl', 'M', 'BSIT', '1', 'brylgorgonio@gmail.com', 'bryl', '123', 'image.png', '2025-03-28 01:40:14', 'student');
+('12345678', 'Amaro', 'Kobe', 'A', 'BSCS', '1', 'kobe@gmail.com', 'kobe', '123', 'image.png', '2025-04-11 02:31:26', 'student'),
+('20949194', 'Gorgonio', 'Bryl', 'M', 'BSIT', '1', 'brylgorgonio@gmail.com', 'bryl', '123', 'image.png', '2025-03-28 01:40:14', 'student'),
+('23615172', 'Alesna', 'Christine', 'A', 'BSIT', '2', 'christine@gmail.com', 'christine', '123', 'image.png', '2025-04-11 02:31:04', 'student');
 
 --
 -- Indexes for dumped tables
@@ -189,7 +208,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `announcements`
 --
 ALTER TABLE `announcements`
-  MODIFY `announcement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `announcement_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

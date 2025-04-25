@@ -28,7 +28,8 @@ function changeDashboard(page) {
                 "AdminStatsRep.php": "Statistics & Reports",
                 "AdminStudentList.php": "Student List",
                 "AdminResources.php": "Resources",
-                "UserProfile.php": "Profile"
+                "UserProfile.php": "Profile",
+                "Leaderboard.php": "Leaderboard"
             };
 
             const pageTitles = (userRole === "student") ? studentPages : adminPages;
@@ -69,6 +70,9 @@ function setActiveLink(page) {
                 createPurposeChart();
                 createLabChart();
                 createDayChart();
+            }
+            else if (pageFile === "AdminResources.php" || pageFile === "UserResources.php") {
+                listFiles();
             }
             link.classList.add('active');
         } else {
@@ -810,6 +814,26 @@ document.addEventListener("click", function (event) {
     }
 });
 
+function showFeedbackForm(idNo, name, lab, purpose) {
+    let overlay = document.createElement("div");
+    overlay.classList.add("overlay");
+
+    overlay.innerHTML = `
+        <div class="feedback-modal">
+            <h2>Submit Feedback</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Lab:</strong> ${lab}</p>
+            <p><strong>Purpose:</strong> ${purpose}</p>
+            <textarea id="feedbackText" placeholder="Enter your feedback..."></textarea>
+            <br>
+            <button onclick="submitFeedback('${idNo}', '${name}', '${lab}', '${purpose}')">Submit</button>
+            <button onclick="closeOverlay()">Cancel</button>
+        </div>
+    `;
+
+    document.body.appendChild(overlay);
+}
+
 // ✅ Function to submit feedback
 function submitFeedback(idNo, name, lab, purpose) {
     let feedbackText = document.getElementById("feedbackText").value;
@@ -869,7 +893,7 @@ function fetchFeedback(feedbackNo) {
 
                 // Add content to the modal
                 feedbackModal.innerHTML = `
-                    <h2>Previous Feedback</h2>
+                    <h2>Feedback</h2>
                     <p>${data.feedback}</p>
                     <button onclick="closeOverlay()">Close</button>
                 `;
@@ -1080,6 +1104,7 @@ document.addEventListener("click", function (event) {
         console.log("Button-Clicked!");
         const resetType = event.target.value; // Use the clicked button's value
         fetch(`./components/resetSessions.php?resetType=${resetType}`);
+        this.location.reload();
     }
 });
 
@@ -1117,5 +1142,109 @@ document.addEventListener("click", function (event) {
                 })
                 .catch(error => console.error('Fetch Error:', error));
         }
+        this.location.reload();
+    }
+});
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//------------------------------ UPLOAD RESOURCES SCRIPTS -------------------------------//
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("upload-btn")) {
+        console.log("Upload button clicked!");
+        uploadFile();
+    }
+});
+
+function uploadFile() {
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+
+    if (!file) {
+        alert('Please select a file.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    fetch('./components/upload.php', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => res.text())
+        .then(response => {
+            if (response.trim() === 'success') {
+                alert('File uploaded!');
+                listFiles();
+            } else {
+                alert('Upload failed.');
+            }
+        });
+}
+
+function listFiles() {
+    console.log("Listing files");
+
+    const userRole = document.body.getAttribute("data-role")?.toLowerCase();
+    console.log("User role in file list:", userRole);
+
+    fetch('./components/list_files.php')
+        .then(res => res.json())
+        .then(files => {
+            const fileList = document.getElementById('fileList');
+            fileList.innerHTML = '';
+
+            files.forEach(file => {
+                const div = document.createElement('div');
+                div.className = 'file-item';
+
+                let fileHTML = `<span>${file}</span>`;
+
+                // Only show delete button if user is not a student
+                if (userRole !== "student") {
+                    fileHTML += `<button onclick="deleteFile('${file}')">🗑️</button>`;
+                }
+
+                div.innerHTML = fileHTML;
+                fileList.appendChild(div);
+            });
+        });
+}
+
+
+function deleteFile(filename) {
+    fetch('./components/delete_file.php?file=' + encodeURIComponent(filename))
+        .then(res => res.text())
+        .then(response => {
+            if (response.trim() === 'success') {
+                alert('File deleted.');
+                listFiles();
+            } else {
+                alert('Delete failed.');
+            }
+        });
+}
+// Call listFiles on page load to display existing files
+document.addEventListener("DOMContentLoaded", function () {
+    listFiles();
+});
+// Close overlay when clicking outside of it
+document.addEventListener("click", function (event) {
+    const overlay = document.querySelector(".overlay");
+    if (overlay && !overlay.contains(event.target)) {
+        closeOverlay();
+    }
+});
+// Close overlay when clicking the cancel button
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("cancel-btn")) {
+        closeOverlay();
+    }
+});
+// Close overlay when clicking the close button
+document.addEventListener("click", function (event) {
+    if (event.target.classList.contains("close-btn")) {
+        closeOverlay();
     }
 });

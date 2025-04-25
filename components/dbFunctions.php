@@ -282,7 +282,6 @@ function getAllSitInHistoryAdminData($conn, $lab, $purpose) {
                 echo 'Sessions: ' . htmlspecialchars($row['sessions']) . '<br>';
                 echo '<button class="reset-btn" value="' . htmlspecialchars($row['idNo']) . '">Reset Sessions</button>';
                 echo '</div>';
-                echo '<button class="reset-btn" value="All">Reset All Sessions</button>';
             }
         } else {
             echo 'No students found.';
