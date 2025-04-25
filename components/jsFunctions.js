@@ -18,6 +18,7 @@ function changeDashboard(page) {
                 "UserHistory.php": "History",
                 "UserReservation.php": "Reservation",
                 "UserResources.php": "Resources",
+                "UserLabSchedules.php": "Lab Schedules",
                 "UserProfile.php": "Profile"
             };
 
@@ -28,6 +29,7 @@ function changeDashboard(page) {
                 "AdminStatsRep.php": "Statistics & Reports",
                 "AdminStudentList.php": "Student List",
                 "AdminResources.php": "Resources",
+                "AdminLabSchedules.php": "Lab Schedules",
                 "UserProfile.php": "Profile",
                 "Leaderboard.php": "Leaderboard"
             };
@@ -1248,3 +1250,41 @@ document.addEventListener("click", function (event) {
         closeOverlay();
     }
 });
+
+//////////////////////////////////////////////////////////////////////
+
+
+///////////////<---- LAB SCHEDULE SCRIPTS ---->//////////////////////
+function openModal(labNo) {
+    document.getElementById('modal-' + labNo).style.display = 'flex';
+}
+
+function saveStatus(labNo) {
+    const status = document.getElementById('status-' + labNo).value;
+
+    fetch('./components/update_status.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: `lab_no=${labNo}&status=${status}`
+    })
+    .then(response => response.text())
+    .then(data => {
+        console.log(data);
+        document.getElementById('modal-' + labNo).style.display = 'none';
+        location.reload(); // Refresh to show updated status
+    });
+}
+
+// Close modal when clicking outside modal-content
+window.addEventListener('click', function(event) {
+    document.querySelectorAll('.modal').forEach(modal => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+});
+
+// Auto-refresh every 60 seconds to update time-based status
+setInterval(() => {
+    location.reload();
+}, 60000);

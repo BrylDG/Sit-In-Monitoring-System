@@ -37,6 +37,8 @@ if (isset($_GET['logout'])) {
   <link rel="stylesheet" href="./styles/AdminFeedback.css" />
   <link rel="stylesheet" href="./styles/AdminStudentList.css" />
   <link rel="stylesheet" href="./styles/Leaderboards.css" />
+  <link rel="stylesheet" href="./styles/AdminResources.css" />
+  <link rel="stylesheet" href="./styles/AdminLabSchedules.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -60,6 +62,7 @@ if (isset($_GET['logout'])) {
           <li><a href="AdminAnnouncements.php" onclick="changeDashboard('AdminAnnouncements.php'); return false;">Announcements</a></li>
           <li><a href="AdminSitIn.php" onclick="changeDashboard('AdminSitIn.php'); return false;">Sit-in</a></li>
           <li><a href="AdminStudentList.php" onclick="changeDashboard('AdminStudentList.php'); return false;">Student List</a></li>
+          <li><a href="AdminLabSchedules.php" onclick="changeDashboard('AdminLabSchedules.php'); return false;">Lab Schedules</a></li>
           <li><a href="AdminFeedback.php" onclick="changeDashboard('AdminFeedback.php'); return false;">Feedbacks</a></li>
           <li><a href="AdminResources.php" onclick="changeDashboard('AdminResources.php'); return false;">Recources</a></li>
           <li><a href="Leaderboard.php" onclick="changeDashboard('Leaderboard.php'); return false;">Leaderboard</a></li>

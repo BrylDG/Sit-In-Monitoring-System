@@ -1,26 +1,21 @@
 <?php
-require './components/dbFunctions.php';
-$conn = new mysqli($servername, $username, $password, $database);
-$userData = getProfile($conn);
-$userRole = isset($userData['role']) ? $userData['role'] : 'student';
+$conn = new mysqli("localhost", "root", "", "sitinmonitoringsystem");
+date_default_timezone_set('Asia/Manila');
+$currentTime = date('H:i:s');
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  $idNo = $_POST['idNo'];
-  $firstName = $_POST['firstName'];
-  $lastName = $_POST['lastName'];
-  $middleName = $_POST['middleName'];
-  $course = $_POST['course']; 
-  $yearLevel = $_POST['yearLevel'];
-  $email = $_POST['email'];
-  $username = $_POST['username'];
-  updateUser($conn, $idNo, $firstName, $lastName, $middleName, $course, $yearLevel, $email, $username);
-}
-$conn->close();
+// Open labs only at their open time (if they were manually closed)
+$conn->query("
+    UPDATE labschedules 
+    SET status = 'Open', manually_closed = 0 
+    WHERE manually_closed = 1 AND TIME('$currentTime') >= open_time AND TIME('$currentTime') < ADDTIME(open_time, '00:01:00')
+");
 
-if (isset($_GET['logout'])) {
-  logout();
-}
-
+// Close labs that are outside of schedule and not manually reopened
+$conn->query("
+    UPDATE labschedules 
+    SET status = 'Closed' 
+    WHERE manually_closed = 0 AND (TIME('$currentTime') < open_time OR TIME('$currentTime') > close_time)
+");
 ?>
 
 
@@ -34,6 +29,7 @@ if (isset($_GET['logout'])) {
   <link rel="stylesheet" href="./styles/UserDash.css" />
   <link rel="stylesheet" href="./styles/UserHistory.css" />
   <link rel="stylesheet" href="./styles/UserAnnouncement.css" />
+  <link rel="stylesheet" href="./styles/AdminResources.css" />
   <title>User Dashboard</title>
   <script src="./components/jsFunctions.js" defer></script>
 </head>
@@ -46,6 +42,7 @@ if (isset($_GET['logout'])) {
         <ul>
           <li><a href="UserAnnouncements.php" onclick="changeDashboard('UserAnnouncements.php'); return false;">Announcements</a></li>
           <li><a href="UserHistory.php" onclick="changeDashboard('UserHistory.php'); return false;">History</a></li>
+          <li><a href="UserLabSchedules.php" onclick="changeDashboard('UserLabSchedules.php'); return false;">Lab Schedules</a></li>
           <li><a href="UserReservation.php" onclick="changeDashboard('UserReservation.php'); return false;">Reservation</a></li>
           <li><a href="UserResources.php" onclick="changeDashboard('UserResources.php'); return false;">Recources</a></li>
           <li id="Profile">
