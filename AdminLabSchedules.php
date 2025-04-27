@@ -1,5 +1,5 @@
 <?php
-// ✅ Connect to database at the very top
+// Connect to database
 $conn = new mysqli("localhost", "root", "", "sitinmonitoringsystem");
 
 if ($conn->connect_error) {
@@ -9,7 +9,7 @@ if ($conn->connect_error) {
 date_default_timezone_set('Asia/Manila');
 $currentTime = date('H:i:s');
 
-// ✅ Handle status update via AJAX
+// Handle status update via AJAX
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $lab_no = intval($_POST["lab_no"]);
     $status = $_POST["status"];
@@ -21,7 +21,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     $stmt = $conn->prepare($query);
-
     if (!$stmt) {
         die("Prepare failed: " . $conn->error);
     }
@@ -34,11 +33,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         echo "Status updated.";
     }
-
-    exit; // ⛔ Don't run the rest of the script during POST
+    exit;
 }
 
-// ✅ Auto-update status logic (runs only during GET request)
+// Auto-update status logic
 $conn->query("
     UPDATE labschedules 
     SET status = 'Open', manually_closed = 0 
@@ -51,28 +49,28 @@ $conn->query("
     WHERE manually_closed = 0 AND (TIME('$currentTime') < open_time OR TIME('$currentTime') > close_time)
 ");
 
-// ✅ Now fetch lab schedules for display
-$result = $conn->query("SELECT * FROM labschedules");
+// Fetch lab schedules for display
+$result = $conn->query("SELECT *, 
+                        DATE_FORMAT(open_time, '%h:%i %p') AS formatted_open_time,
+                        DATE_FORMAT(close_time, '%h:%i %p') AS formatted_close_time
+                        FROM labschedules");
 
 if (!$result) {
     die("Query failed: " . $conn->error);
 }
 ?>
 
-
-
-    
 <div class="labs-container">
     <?php while ($row = $result->fetch_assoc()) { ?>
         <div class="lab-card" onclick="openModal(<?= $row['lab_no'] ?>)">
             <h3>Lab <?= $row['lab_no'] ?></h3>
-            <p><strong>Open:</strong> <?= $row['open_time'] ?></p>
-            <p><strong>Close:</strong> <?= $row['close_time'] ?></p>
+            <p><strong>Open:</strong> <?= $row['formatted_open_time'] ?></p>
+            <p><strong>Close:</strong> <?= $row['formatted_close_time'] ?></p>
             <p class="status <?= $row['status'] ?>"><?= $row['status'] ?></p>
         </div>
 
         <!-- Modal for this lab -->
-        <div id="modal-<?= $row['lab_no'] ?>" class="modal">
+        <div id="modal-<?= $row['lab_no'] ?>" class="modal1">
             <div class="modal-content">
                 <h3>Update Status for Lab <?= $row['lab_no'] ?></h3>
                 <select id="status-<?= $row['lab_no'] ?>">

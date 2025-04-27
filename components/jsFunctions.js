@@ -111,6 +111,7 @@ document.addEventListener("click", function (event) {
 });
 
 function showAnnouncementForm() {
+    console.log("Showing announcement form..."); // Debugging
     const overlay = document.createElement("div");
     overlay.id = "announcementOverlay";
     overlay.classList.add("overlay");
@@ -372,7 +373,7 @@ function showExportForm(event) {
     overlay.classList.add("overlay");
 
     // Determine the source of the call (button id)
-    const source = event.target.id === 'history' ? 'history' : 'reports';
+    const source = event.target.closest('[data-type]')?.dataset.type || 'reports';
     console.log(source);
 
     overlay.innerHTML = `
@@ -1124,38 +1125,38 @@ document.addEventListener("DOMContentLoaded", function () {
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                     body: 'idNo=' + encodeURIComponent(idNo)
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        alert("User signed out successfully!");
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("User signed out successfully!");
 
-                        // Step 2: Ask to give a point
-                        if (confirm("Do you want to give this student 1 point?")) {
-                            fetch('./components/givePoint.php', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                                body: 'student_id=' + encodeURIComponent(studentId)
-                            })
-                            .then(res => res.json())
-                            .then(resData => {
-                                if (resData.success) {
-                                    alert("1 point awarded to student.");
-                                } else {
-                                    alert("Failed to award point: " + resData.error);
-                                }
-                            })
-                            .catch(err => {
-                                console.error("Error giving point:", err);
-                                alert("Something went wrong while giving the point.");
-                            });
+                            // Step 2: Ask to give a point
+                            if (confirm("Do you want to give this student 1 point?")) {
+                                fetch('./components/givePoint.php', {
+                                    method: 'POST',
+                                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                                    body: 'student_id=' + encodeURIComponent(studentId)
+                                })
+                                    .then(res => res.json())
+                                    .then(resData => {
+                                        if (resData.success) {
+                                            alert("1 point awarded to student.");
+                                        } else {
+                                            alert("Failed to award point: " + resData.error);
+                                        }
+                                    })
+                                    .catch(err => {
+                                        console.error("Error giving point:", err);
+                                        alert("Something went wrong while giving the point.");
+                                    });
+                            }
+
+                            location.reload(); // Reload after sign out
+                        } else {
+                            alert("Error: " + data.error);
                         }
-
-                        location.reload(); // Reload after sign out
-                    } else {
-                        alert("Error: " + data.error);
-                    }
-                })
-                .catch(error => console.error('Sign-out Error:', error));
+                    })
+                    .catch(error => console.error('Sign-out Error:', error));
             }
         }
     });
@@ -1286,16 +1287,16 @@ function saveStatus(labNo) {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `lab_no=${labNo}&status=${status}`
     })
-    .then(response => response.text())
-    .then(data => {
-        console.log(data);
-        document.getElementById('modal-' + labNo).style.display = 'none';
-        location.reload(); // Refresh to show updated status
-    });
+        .then(response => response.text())
+        .then(data => {
+            console.log(data);
+            document.getElementById('modal-' + labNo).style.display = 'none';
+            location.reload(); // Refresh to show updated status
+        });
 }
 
 // Close modal when clicking outside modal-content
-window.addEventListener('click', function(event) {
+window.addEventListener('click', function (event) {
     document.querySelectorAll('.modal').forEach(modal => {
         if (event.target === modal) {
             modal.style.display = 'none';
