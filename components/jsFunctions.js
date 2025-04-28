@@ -1194,17 +1194,24 @@ function uploadFile() {
         method: 'POST',
         body: formData
     })
-        .then(res => res.text())
-        .then(response => {
-            if (response.trim() === 'success') {
-                alert('File uploaded!');
-                listFiles();
-            } else {
-                alert('Upload failed.');
-            }
-        });
+    .then(res => res.text())
+    .then(response => {
+        if (response.trim() === 'success') {
+            alert('File uploaded successfully!');
+            listFiles();
+            // Clear the file input after successful upload
+            fileInput.value = '';
+        } else {
+            alert('Upload failed: ' + response);
+        }
+    })
+    .catch(error => {
+        console.error('Upload error:', error);
+        alert('Upload failed due to an error.');
+    });
 }
 
+// Update the listFiles function to make files clickable
 function listFiles() {
     console.log("Listing files");
 
@@ -1212,45 +1219,83 @@ function listFiles() {
     console.log("User role in file list:", userRole);
 
     fetch('./components/list_files.php')
-        .then(res => res.json())
-        .then(files => {
-            const fileList = document.getElementById('fileList');
-            fileList.innerHTML = '';
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return res.json();
+    })
+    .then(files => {
+        const fileList = document.getElementById('fileList');
+        fileList.innerHTML = '';
 
-            files.forEach(file => {
-                const div = document.createElement('div');
-                div.className = 'file-item';
+        if (files.length === 0) {
+            fileList.innerHTML = '<div class="no-files">No files available</div>';
+            return;
+        }
 
-                let fileHTML = `<span>${file}</span>`;
-
-                // Only show delete button if user is not a student
-                if (userRole !== "student") {
-                    fileHTML += `<button onclick="deleteFile('${file}')">🗑️</button>`;
-                }
-
-                div.innerHTML = fileHTML;
-                fileList.appendChild(div);
-            });
+        files.forEach(file => {
+            const div = document.createElement('div');
+            div.className = 'file-item';
+            
+            // Make the entire file name clickable for download
+            div.innerHTML = `
+                <span class="downloadable-file" onclick="downloadFile('${file}')">
+                    ${file}
+                    ${userRole !== "student" ? `<button class="delete-btn" onclick="event.stopPropagation(); deleteFile('${file}')">🗑️</button>` : ''}
+                </span>
+            `;
+            
+            fileList.appendChild(div);
         });
+    })
+    .catch(error => {
+        console.error('Error listing files:', error);
+        document.getElementById('fileList').innerHTML = '<div class="error">Error loading files</div>';
+    });
 }
 
+function downloadFile(filename) {
+    // Create a temporary iframe to handle the download
+    const iframe = document.createElement('iframe');
+    iframe.style.display = 'none';
+    iframe.src = `./components/download.php?file=${encodeURIComponent(filename)}`;
+    document.body.appendChild(iframe);
+    
+    // Remove the iframe after a short delay
+    setTimeout(() => {
+        document.body.removeChild(iframe);
+    }, 1000);
+}
 
 function deleteFile(filename) {
-    fetch('./components/delete_file.php?file=' + encodeURIComponent(filename))
-        .then(res => res.text())
-        .then(response => {
-            if (response.trim() === 'success') {
-                alert('File deleted.');
-                listFiles();
-            } else {
-                alert('Delete failed.');
-            }
-        });
+    if (!confirm(`Are you sure you want to delete "${filename}"?`)) {
+        return;
+    }
+
+    fetch('./components/delete_file.php?file=' + encodeURIComponent(filename), {
+        method: 'DELETE'
+    })
+    .then(res => res.text())
+    .then(response => {
+        if (response.trim() === 'success') {
+            alert('File deleted successfully.');
+            listFiles();
+        } else {
+            alert('Delete failed: ' + response);
+        }
+    })
+    .catch(error => {
+        console.error('Delete error:', error);
+        alert('Delete failed due to an error.');
+    });
 }
+
 // Call listFiles on page load to display existing files
 document.addEventListener("DOMContentLoaded", function () {
     listFiles();
 });
+
 // Close overlay when clicking outside of it
 document.addEventListener("click", function (event) {
     const overlay = document.querySelector(".overlay");
@@ -1258,12 +1303,14 @@ document.addEventListener("click", function (event) {
         closeOverlay();
     }
 });
+
 // Close overlay when clicking the cancel button
 document.addEventListener("click", function (event) {
     if (event.target.classList.contains("cancel-btn")) {
         closeOverlay();
     }
 });
+
 // Close overlay when clicking the close button
 document.addEventListener("click", function (event) {
     if (event.target.classList.contains("close-btn")) {

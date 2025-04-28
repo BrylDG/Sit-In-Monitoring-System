@@ -1,19 +1,19 @@
 <?php
 include 'dbFunctions.php';
 
-// Function that automatically fetches and formats all durations
-function generateDurationLeaderboard() {
-    global $conn; // Use the database connection from dbFunctions.php
+function generatePointsLeaderboard() {
+    global $conn;
 
     try {
-        // Query to get total duration for each student
+        // Query to get total points for each student with their names
         $query = "SELECT 
-                    idNo, 
-                    name, 
-                    SEC_TO_TIME(SUM(TIME_TO_SEC(Duration))) AS total_duration
-                  FROM SitInHistory
-                  GROUP BY idNo, name
-                  ORDER BY total_duration DESC";
+                    u.idNo, 
+                    CONCAT(u.firstName, ' ', u.lastName) AS name,
+                    IFNULL(s.totalPoints, 0) AS total_points
+                  FROM users u
+                  LEFT JOIN sessions s ON u.idNo = s.idNo
+                  WHERE u.role = 'student'
+                  ORDER BY total_points DESC";
         
         $result = $conn->query($query);
         
@@ -23,59 +23,49 @@ function generateDurationLeaderboard() {
         
         $students = $result->fetch_all(MYSQLI_ASSOC);
         
-        // Generate the HTML table rows
         $htmlRows = '';
         $rank = 1;
+        $prevPoints = null;
+        $actualRank = 1;
         
         foreach ($students as $student) {
+            // Handle ties in ranking
+            if ($prevPoints !== null && $student['total_points'] < $prevPoints) {
+                $actualRank = $rank;
+            }
+            $prevPoints = $student['total_points'];
+            
             $medal = '';
-            if ($rank == 1) {
-                $medal = '<span class="medal-icon gold-medal"></span>';
-            } elseif ($rank == 2) {
-                $medal = '<span class="medal-icon silver-medal"></span>';
-            } elseif ($rank == 3) {
-                $medal = '<span class="medal-icon bronze-medal"></span>';
+            if ($actualRank == 1) {
+                $medal = '<span class="medal-icon gold-medal">🥇</span>';
+            } elseif ($actualRank == 2) {
+                $medal = '<span class="medal-icon silver-medal">🥈</span>';
+            } elseif ($actualRank == 3) {
+                $medal = '<span class="medal-icon bronze-medal">🥉</span>';
             }
             
-            // Format the duration directly here
-            $time = $student['total_duration'];
-            $formattedDuration = '0 min';
-            
-            if ($time != '00:00:00' && !empty($time)) {
-                $parts = explode(':', $time);
-                $hours = (int)$parts[0];
-                $minutes = (int)$parts[1];
-                
-                if ($hours > 0 && $minutes > 0) {
-                    $formattedDuration = "$hours hours $minutes min";
-                } elseif ($hours > 0) {
-                    $formattedDuration = "$hours hours";
-                } else {
-                    $formattedDuration = "$minutes min";
-                }
-            }
+            $points = $student['total_points'];
             
             $htmlRows .= <<<HTML
                 <tr class="table-row">
-                    <td class="table-data rank-cell">$medal$rank</td>
+                    <td class="table-data rank-cell">$medal$actualRank</td>
                     <td class="table-data name-cell">{$student['name']}</td>
-                    <td class="table-data duration-cell">$formattedDuration</td>
+                    <td class="table-data points-cell">$points pts</td>
                 </tr>
             HTML;
             
             $rank++;
         }
         
-        // Return the complete HTML
         return <<<HTML
         <div id="leaderboard-container">
-            <h1 id="header">Student Duration Leaderboard</h1>
+            <h1 id="header">Student Points Leaderboard</h1>
             <table id="leaderboard-table">
                 <thead>
                     <tr class="table-row">
                         <th class="table-header rank-header">Rank</th>
                         <th class="table-header name-header">Student Name</th>
-                        <th class="table-header duration-header">Total Duration</th>
+                        <th class="table-header points-header">Total Points</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,10 +80,8 @@ function generateDurationLeaderboard() {
     }
 }
 
-// Display the leaderboard
-echo generateDurationLeaderboard();
+echo generatePointsLeaderboard();
 
-// Close connection if needed
 if (isset($conn)) {
     $conn->close();
 }

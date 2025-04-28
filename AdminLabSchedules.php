@@ -37,12 +37,14 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // Auto-update status logic
+// Update to Open if current time is within open hours and not manually closed
 $conn->query("
     UPDATE labschedules 
     SET status = 'Open', manually_closed = 0 
-    WHERE manually_closed = 1 AND TIME('$currentTime') >= open_time AND TIME('$currentTime') < ADDTIME(open_time, '00:01:00')
+    WHERE manually_closed = 0 AND TIME('$currentTime') >= open_time AND TIME('$currentTime') <= close_time
 ");
 
+// Update to Closed if current time is outside open hours and not manually opened
 $conn->query("
     UPDATE labschedules 
     SET status = 'Closed' 
@@ -63,10 +65,14 @@ if (!$result) {
 <div class="labs-container">
     <?php while ($row = $result->fetch_assoc()) { ?>
         <div class="lab-card" onclick="openModal(<?= $row['lab_no'] ?>)">
-            <h3>Lab <?= $row['lab_no'] ?></h3>
-            <p><strong>Open:</strong> <?= $row['formatted_open_time'] ?></p>
-            <p><strong>Close:</strong> <?= $row['formatted_close_time'] ?></p>
-            <p class="status <?= $row['status'] ?>"><?= $row['status'] ?></p>
+            <div class="top-div">
+                <h3>Lab <?= $row['lab_no'] ?></h3>
+                <p class="status <?= $row['status'] ?>"><?= $row['status'] ?></p>
+            </div>
+            <div class="bottom-div">
+                <p><strong>Open:</strong> <?= $row['formatted_open_time'] ?></p><br>
+                <p><strong>Close:</strong> <?= $row['formatted_close_time'] ?></p>
+            </div>
         </div>
 
         <!-- Modal for this lab -->

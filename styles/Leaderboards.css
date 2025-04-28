@@ -59,3 +59,25 @@
 .bronze-medal {
     background-color: #cd7f32;
 }
+
+.top-div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid gray;
+    padding: 0 10px;
+}
+
+.bottom-div {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 0 10px;
+    gap: 2px; /* Controls space between flex items */
+}
+
+.bottom-div p {
+    margin: 0; /* Remove default paragraph margins */
+    line-height: 1.2; /* Adjust if text appears too tight */
+}
