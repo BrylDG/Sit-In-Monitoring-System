@@ -15,7 +15,7 @@ $conn->close();
 ?>
 <div class="AnnouncementsDiv">
     <div id="top-div">
-        <button id="addAnnouncement">+ Add Announcement</button>
+        <button id="addAnnouncement">+</button>
     </div>
 
     <div id="bottom-div">

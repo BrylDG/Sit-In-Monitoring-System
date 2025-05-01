@@ -5,7 +5,11 @@
     <div class="LabChart">
         <canvas id="LabChart"></canvas>
     </div>
-    <div class="DayChart">
+   
+</div>
+
+<div class="table-stat-cont">
+<div class="DayChart">
         <canvas id="DayChart"></canvas>
     </div>
     <button class="download">Download Reports</button>
